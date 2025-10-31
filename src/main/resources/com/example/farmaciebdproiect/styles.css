@@ -1,0 +1,149 @@
+/* --- FUNDAL ȘI FONT GENERAL --- */
+.root {
+    -fx-background-color: #f4f4f4;
+    -fx-font-family: "Segoe UI", Arial, sans-serif; /* Am adaugat un font mai modern */
+}
+
+/* Stil de bază pentru toate etichetele */
+.label {
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333;
+}
+
+/* --- TITLURI --- */
+/* Clasa setată din codul Java */
+.header-title {
+    -fx-font-size: 20px;
+    -fx-font-weight: 600; /* Puțin mai gros */
+    -fx-text-fill: #1a5276;
+    -fx-border-color: #1a5276;
+    -fx-border-width: 0 0 2px 0;
+    -fx-padding: 0 0 5px 0;
+}
+
+/* --- ECRAN LOGIN --- */
+/* Clasa setată din Java */
+.login-container {
+    -fx-background-color: #ffffff;
+    -fx-padding: 40px;
+    -fx-background-radius: 10px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 20, 0, 0, 0);
+    -fx-max-width: 450px;
+}
+/* Pictogramele din câmpurile de text (daca le veti adauga in FXML) */
+.text-field .left-node {
+    -fx-padding: 0 10px 0 5px;
+    -fx-opacity: 0.5;
+}
+
+/* --- TAB-URI --- */
+.tab-pane .tab-header-area .tab-header-background {
+    -fx-background-color: #f4f4f4;
+}
+.tab-pane .tab {
+    -fx-background-color: #e0e0e0;
+    -fx-border-color: #c0c0c0;
+    -fx-padding: 10px 22px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 5px 5px 0 0;
+    -fx-border-radius: 5px 5px 0 0;
+}
+.tab-pane .tab:selected {
+    -fx-background-color: #ffffff; /* Tab-ul activ e alb */
+    -fx-border-color: #c0c0c0;
+    -fx-border-width: 1px 1px 0 1px;
+}
+.tab-pane .tab:focused {
+    -fx-focus-color: transparent;
+}
+/* Spațiu între pictogramă și text în tab (setat din Java) */
+.tab .tab-label {
+    -fx-graphic-text-gap: 8px;
+}
+
+/* --- BUTOANE --- */
+.button {
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    -fx-background-radius: 5px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 5, 0, 0, 2);
+    -fx-transition: all 0.2s ease-in-out;
+    -fx-graphic-text-gap: 8px; /* Spațiu între pictogramă și text */
+}
+.button:hover {
+    -fx-transform: scale(1.03); /* Mărește butonul cu 3% */
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 10, 0, 0, 3); /* Umbră mai pronunțată */
+}
+
+/* ID-uri specifice setate din Java */
+/* Folosim calea "Images/" (cu 'I' mare) si numele fisierelor tale */
+#butonAdauga {
+    -fx-background-color: #28a745; /* Verde */
+}
+#butonSterge {
+    -fx-background-color: #dc3545; /* Un roșu standard pentru "pericol/ștergere" */
+    -fx-text-fill: white;       /* Forțează textul și iconița să fie albe */
+}
+#butonFinalizeaza {
+    -fx-background-color: #007bff; /* Albastru */
+}
+#butonComanda {
+    -fx-background-color: #17a2b8; /* Albastru-verzui */
+}
+/* Butonul de login */
+#loginButton {
+    -fx-background-color: #007bff;
+    -fx-font-size: 14px;
+}
+
+
+/* --- TABELE (TableView) --- */
+.table-view .column-header-background {
+    -fx-background-color: linear-gradient(#e0e0e0, #c0c0c0);
+}
+.table-view .column-header .label {
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #222;
+}
+/* Elimină o bordură inutilă din colțul tabelului */
+.table-view .filler {
+    -fx-background-color: #c0c0c0;
+}
+
+/*
+ * --- AICI ESTE FIX-UL PENTRU TABEL ---
+ */
+
+/* Stil pentru rânduri */
+.table-row-cell {
+    -fx-font-size: 13px;
+    -fx-border-width: 0 0 1px 0;
+    -fx-border-color: #e0e0e0;
+}
+
+/* Rândurile alternative au un fundal ușor diferit */
+.table-row-cell:odd {
+    -fx-background-color: #f9f9f9;
+}
+.table-row-cell:even {
+    -fx-background-color: #ffffff;
+}
+
+/* Rândul la hover (când pui mouse-ul peste) */
+.table-row-cell:hover {
+    -fx-background-color: #d6eaf8; /* Albastru deschis */
+}
+
+/* Rândul CÂND ESTE SELECTAT */
+.table-row-cell:selected {
+    -fx-background-color: #007bff; /* Fundal albastru închis */
+}
+
+/* Celulele (textul) DINTR-UN RÂND SELECTAT */
+/* Aceasta regula forteaza textul sa fie alb, REZOLVAND PROBLEMA */
+.table-row-cell:selected .table-cell {
+    -fx-text-fill: white; /* Text alb */
+}
