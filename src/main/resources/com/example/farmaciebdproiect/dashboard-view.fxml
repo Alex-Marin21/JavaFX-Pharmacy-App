@@ -230,14 +230,15 @@
             </content>
         </Tab>
 
-        <Tab fx:id="angajatiTab" text="Angajati">
+        <Tab fx:id="angajatiTab" text="Angajați">
             <content>
                 <VBox spacing="10" xmlns:fx="http://javafx.com/fxml/1">
                     <padding>
                         <Insets bottom="10" left="10" right="10" top="10" />
                     </padding>
                     <children>
-                        <Label style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Lista Angajatilor" />
+
+                        <Label fx:id="titluListaAngajati" style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Listă Angajați" />
 
                         <TableView fx:id="angajatiTable" VBox.vgrow="ALWAYS">
                             <columns>
@@ -263,7 +264,12 @@
                                 </TableColumn>
                             </columns>
                         </TableView>
-                    </children>
+
+                        <Button fx:id="testQueriesButton"
+                                text="Rulează Interogări Test (Verifică Consola)"
+                                onAction="#onTestQueriesClick"
+                                style="-fx-background-color: #f0ad4e; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand;"
+                                maxWidth="Infinity" /> </children>
                 </VBox>
             </content>
         </Tab>

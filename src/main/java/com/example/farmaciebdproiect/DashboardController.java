@@ -764,6 +764,34 @@ public class DashboardController implements Initializable {
         }
     }
 
+    private void actualizeazaItemInListaUI(ObservableList<StocView> lista, StocView lotModificat) {
+        boolean gasitInLista = false;
+
+        for (StocView itemExistent : lista) {
+            // Cautam item-ul dupa LotID (care este unic)
+            if (itemExistent.getLotID() == lotModificat.getLotID()) {
+
+                // 1. L-AM GASIT (cazul UPDATE)
+                // Actualizam proprietatile item-ului DEJA existent in lista.
+                // Deoarece StocView foloseste JavaFX Properties, tabelul se va actualiza automat.
+
+                itemExistent.setCantitateStoc(lotModificat.getCantitateStoc());
+                // Trebuie sa parsam inapoi data din String in LocalDate pentru setter
+                itemExistent.setDataExpirare(LocalDate.parse(lotModificat.getDataExpirare()));
+                itemExistent.setPretVanzare(lotModificat.getPretVanzare());
+
+                gasitInLista = true;
+                break; // Am terminat
+            }
+        }
+
+        if (!gasitInLista) {
+            // 2. NU L-AM GASIT (cazul INSERT)
+            // Acesta este un lot complet nou, deci il adaugam in lista
+            lista.add(lotModificat);
+        }
+    }
+
 
     @FXML
     private void onAdaugaMedicamentClick() {
@@ -959,6 +987,53 @@ public class DashboardController implements Initializable {
             new Thread(deleteTask).start();
         }
     }
+
+    @FXML
+    private Button testQueriesButton; // <-- ADAUGĂ ASTA
+
+    // ... (restul codului din DashboardController) ...
+
+    /**
+     * Metoda apelata de butonul de test.
+     * Ruleaza toate interogarile din clasa DatabaseQueries
+     * si afiseaza rezultatele in consola.
+     */
+    @FXML
+    private void onTestQueriesClick() {
+        System.out.println("==================================================");
+        System.out.println("         INCEPUT RULARE INTEROGARI TEST           ");
+        System.out.println("==================================================");
+
+        // Apelez metodele statice din clasa nou creata
+
+        // --- JOIN-uri ---
+        // ATENTIE: Schimba "Popescu" cu un nume de angajat care EXISTA la tine in BD
+        DatabaseQueries.getVanzariPentruAngajat("Popescu");
+
+        // ATENTIE: Schimba '1' cu un VanzareID care EXISTA la tine in BD
+        DatabaseQueries.getDetaliiVanzare(1);
+
+        // ATENTIE: Schimba "Nume Furnizor" cu un furnizor care EXISTA la tine in BD
+        DatabaseQueries.getStocDeLaFurnizor("Pharma Invest");
+
+        // --- Subcereri ---
+        DatabaseQueries.getMedicamenteFaraStoc();
+        DatabaseQueries.getAngajatiFaraVanzari();
+        DatabaseQueries.getLoturiPesteMedie();
+        DatabaseQueries.getFurnizorCelMaiScumpProdus();
+
+        System.out.println("\n==================================================");
+        System.out.println("          FINAL RULARE INTEROGARI TEST            ");
+        System.out.println("==================================================");
+
+        afiseazaAlerta("Interogări Rulate",
+                "Rezultatele au fost afișate în consolă.",
+                "Verifică fereastra 'Run' sau 'Output' din IDE-ul tău (NetBeans/IntelliJ) pentru a vedea rezultatele.",
+                Alert.AlertType.INFORMATION);
+    }
+
+
+// ... (functiile ajutatoare, gen createIcon, afiseazaAlerta etc.)
 
     // --- METODA NOUA PENTRU RECEPTIE MARFA ---
 
@@ -1163,13 +1238,22 @@ public class DashboardController implements Initializable {
             };
 
             insertLotTask.setOnSucceeded(e -> {
-                // Adaugam noul lot in ambele liste de stoc
-                stocuriList.add(insertLotTask.getValue());
-                stocVanzariList.add(insertLotTask.getValue());
-                afiseazaAlerta("Succes", null, "Lotul a fost adăugat în stoc.", Alert.AlertType.INFORMATION);
+                // Preluam lotul care a fost modificat sau inserat in BD
+                StocView lotModificat = insertLotTask.getValue();
+
+                // Folosim o functie ajutatoare pentru a actualiza listele
+                // in mod inteligent (fara a crea duplicate)
+                actualizeazaItemInListaUI(stocuriList, lotModificat);
+                actualizeazaItemInListaUI(stocVanzariList, lotModificat);
+
+                // Fortam un refresh al tabelelor (recomandat)
+                stocuriTable.refresh();
+                stocVanzariTable.refresh();
+
+                afiseazaAlerta("Succes", null, "Lotul a fost adăugat sau actualizat în stoc.", Alert.AlertType.INFORMATION);
             });
 
-            insertLotTask.setOnFailed(e -> {
+            insertLotTask.setOnFailed(e ->  {
                 afiseazaAlerta("Eroare Bază Date", null, "Eroare la adăugarea lotului: " + e.getSource().getException().getMessage(), Alert.AlertType.ERROR);
                 e.getSource().getException().printStackTrace();
             });
