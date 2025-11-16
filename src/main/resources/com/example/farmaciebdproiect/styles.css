@@ -218,3 +218,21 @@
 .scroll-bar .increment-arrow, .scroll-bar .decrement-arrow {
     -fx-padding: 0; -fx-shape: "";
 }
+/* === STIL PENTRU ANGAJAȚII INACTIVI (NOU) === */
+
+/* Acesta colorează rândul normal */
+.table-row-cell:inactive {
+    -fx-background-color: #FFEBEE; /* Roșu foarte deschis */
+}
+
+/* Acesta asigură că rândul RĂMÂNE colorat (dar diferit)
+   chiar și atunci când este selectat */
+.table-row-cell:inactive:selected {
+    -fx-background-color: #F8BBD0; /* O nuanță de roz mai închisă */
+    -fx-text-fill: #AD1457;
+}
+
+/* Asigură că textul se vede corect pe rândul inactiv selectat */
+.table-row-cell:inactive:selected .text {
+     -fx-fill: #AD1457;
+}

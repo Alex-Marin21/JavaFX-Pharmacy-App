@@ -61,7 +61,7 @@
                         </TableView>
                         <HBox alignment="CENTER_LEFT" spacing="10.0">
                             <children>
-                                <Button fx:id="adaugaLotButton" mnemonicParsing="false" onAction="#onAdaugaLotClick" text="Adaugă Lot Nou în Stoc (Recepție)" />
+                                <Button fx:id="adaugaLotButton" mnemonicParsing="false" onAction="#onAdaugaLotClick" text="Adauga Lot Nou în Stoc (Receptie)" />
                             </children>
                             <padding>
                                 <Insets top="10.0" />
@@ -89,8 +89,8 @@
                         </TableView>
                         <HBox alignment="CENTER_LEFT" spacing="10.0">
                             <children>
-                                <Button fx:id="adaugaMedicamentButton" mnemonicParsing="false" onAction="#onAdaugaMedicamentClick" text="Adaugă Medicament Nou" />
-                                <Button fx:id="stergeMedicamentButton" mnemonicParsing="false" onAction="#onStergeMedicamentClick" text="Șterge Medicamentul Selectat" />
+                                <Button fx:id="adaugaMedicamentButton" mnemonicParsing="false" onAction="#onAdaugaMedicamentClick" text="Adauga Medicament Nou" />
+                                <Button fx:id="stergeMedicamentButton" mnemonicParsing="false" onAction="#onStergeMedicamentClick" text="Sterge Medicamentul Selectat" />
                             </children>
                             <padding>
                                 <Insets top="10.0" />
@@ -107,13 +107,27 @@
 
                     <VBox spacing="10" style="-fx-padding: 10;">
                         <children>
-                            <Label style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Produse cu Stoc Critic (&lt;10)" />
+
+                            <Label fx:id="titluProduseCritice" style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Produse cu Stoc Critic (&lt;10)" />
                             <TableView fx:id="comenziProduseTable" VBox.vgrow="ALWAYS">
                                 <columns>
                                     <TableColumn fx:id="colComandaNume" prefWidth="250.0" text="Nume Medicament" />
                                     <TableColumn fx:id="colComandaStoc" prefWidth="80.0" text="Total Stoc" />
                                 </columns>
                             </TableView>
+
+                            <Label fx:id="titluProduseEpuizate" styleClass="header-title" text="Produse Epuizate (Stoc 0)">
+                                <padding>
+                                    <Insets top="10.0" />
+                                </padding>
+                            </Label>
+                            <TableView fx:id="produseEpuizateTable" VBox.vgrow="ALWAYS">
+                                <columns>
+                                    <TableColumn fx:id="colEpuizatNume" prefWidth="250.0" text="Nume Medicament" />
+                                    <TableColumn fx:id="colEpuizatDozaj" prefWidth="80.0" text="Dozaj" />
+                                </columns>
+                            </TableView>
+
                         </children>
                     </VBox>
 
@@ -184,93 +198,113 @@
 
         <Tab fx:id="furnizoriTab" text="Furnizori">
             <content>
-                <VBox spacing="10" xmlns:fx="http://javafx.com/fxml/1">
-                    <padding>
-                        <Insets bottom="10" left="10" right="10" top="10" />
-                    </padding>
-                    <children>
-                        <Label fx:id="titluListaFurnizori" style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Lista Furnizorilor" />
+                <SplitPane dividerPositions="0.6" prefHeight="160.0" prefWidth="200.0">
+                    <VBox spacing="10" style="-fx-padding: 10;">
+                        <children>
+                            <Label fx:id="titluListaFurnizori" text="Lista Furnizorilor" />
+                            <TableView fx:id="furnizoriTable" VBox.vgrow="ALWAYS">
+                                <columns>
+                                    <TableColumn prefWidth="50.0" text="ID">
+                                        <cellValueFactory>
+                                            <PropertyValueFactory property="furnizorID" />
+                                        </cellValueFactory>
+                                    </TableColumn>
+                                    <TableColumn prefWidth="200.0" text="Nume Furnizor">
+                                        <cellValueFactory>
+                                            <PropertyValueFactory property="numeFurnizor" />
+                                        </cellValueFactory>
+                                    </TableColumn>
+                                    <TableColumn prefWidth="120.0" text="CUI">
+                                        <cellValueFactory>
+                                            <PropertyValueFactory property="cui" />
+                                        </cellValueFactory>
+                                    </TableColumn>
+                                    <TableColumn prefWidth="120.0" text="Telefon">
+                                        <cellValueFactory>
+                                            <PropertyValueFactory property="telefon" />
+                                        </cellValueFactory>
+                                    </TableColumn>
+                                </columns>
+                            </TableView>
+                            <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                <children>
+                                    <Button fx:id="adaugaFurnizorButton" mnemonicParsing="false" onAction="#onAdaugaFurnizorClick" text="Adauga Furnizor Nou" />
+                                    <Button fx:id="stergeFurnizorButton" mnemonicParsing="false" onAction="#onStergeFurnizorClick" text="Sterge Furnizorul Selectat" />
+                                </children>
+                                <padding>
+                                    <Insets top="10.0" />
+                                </padding>
+                            </HBox>
+                        </children>
+                    </VBox>
 
-                        <TableView fx:id="furnizoriTable" VBox.vgrow="ALWAYS">
-                            <columns>
-                                <TableColumn prefWidth="50.0" text="ID">
-                                    <cellValueFactory>
-                                        <PropertyValueFactory property="furnizorID" />
-                                    </cellValueFactory>
-                                </TableColumn>
-                                <TableColumn prefWidth="200.0" text="Nume Furnizor">
-                                    <cellValueFactory>
-                                        <PropertyValueFactory property="numeFurnizor" />
-                                    </cellValueFactory>
-                                </TableColumn>
-                                <TableColumn prefWidth="120.0" text="CUI">
-                                    <cellValueFactory>
-                                        <PropertyValueFactory property="cui" />
-                                    </cellValueFactory>
-                                </TableColumn>
-                                <TableColumn prefWidth="120.0" text="Telefon">
-                                    <cellValueFactory>
-                                        <PropertyValueFactory property="telefon" />
-                                    </cellValueFactory>
-                                </TableColumn>
-                            </columns>
-                        </TableView>
+                    <VBox spacing="10" style="-fx-padding: 10;">
+                        <children>
+                            <Label fx:id="titluStocFurnizor" styleClass="header-title" text="Stoc de la Furnizor" />
+                            <TableView fx:id="stocFurnizorTable" VBox.vgrow="ALWAYS">
+                                <columns>
+                                    <TableColumn fx:id="colStocFurnNume" prefWidth="200.0" text="Medicament" />
+                                    <TableColumn fx:id="colStocFurnLot" prefWidth="100.0" text="Cod Lot" />
+                                    <TableColumn fx:id="colStocFurnCant" prefWidth="80.0" text="Cantitate" />
+                                </columns>
+                            </TableView>
+                            <Label text="* Selectați un furnizor din stânga." style="-fx-font-style: italic; -fx-text-fill: #555;" />
+                        </children>
+                    </VBox>
 
-                        <HBox alignment="CENTER_LEFT" spacing="10.0">
-                            <children>
-                                <Button fx:id="adaugaFurnizorButton" mnemonicParsing="false" onAction="#onAdaugaFurnizorClick" text="Adaugă Furnizor Nou" />
-                                <Button fx:id="stergeFurnizorButton" mnemonicParsing="false" onAction="#onStergeFurnizorClick" text="Șterge Furnizorul Selectat" />
-                            </children>
-                            <padding>
-                                <Insets top="10.0" />
-                            </padding>
-                        </HBox>
-                    </children>
-                </VBox>
+                </SplitPane>
             </content>
         </Tab>
 
-        <Tab fx:id="angajatiTab" text="Angajați">
+        <Tab fx:id="angajatiTab" text="Angajați &amp; Performanță">
             <content>
-                <VBox spacing="10" xmlns:fx="http://javafx.com/fxml/1">
-                    <padding>
-                        <Insets bottom="10" left="10" right="10" top="10" />
-                    </padding>
-                    <children>
+                <SplitPane dividerPositions="0.6" prefHeight="160.0" prefWidth="200.0">
+                    <VBox spacing="10" style="-fx-padding: 10;">
+                        <children>
+                            <Label fx:id="titluListaAngajati" text="Lista Angajati" />
+                            <TableView fx:id="angajatiTable" VBox.vgrow="ALWAYS">
+                                <columns>
+                                    <TableColumn prefWidth="50.0" text="ID">
+                                        <cellValueFactory>
+                                            <PropertyValueFactory property="angajatID" />
+                                        </cellValueFactory>
+                                    </TableColumn>
+                                    <TableColumn prefWidth="150.0" text="Nume">
+                                        <cellValueFactory>
+                                            <PropertyValueFactory property="nume" />
+                                        </cellValueFactory>
+                                    </TableColumn>
+                                    <TableColumn prefWidth="150.0" text="Prenume">
+                                        <cellValueFactory>
+                                            <PropertyValueFactory property="prenume" />
+                                        </cellValueFactory>
+                                    </TableColumn>
+                                    <TableColumn prefWidth="100.0" text="Cod Parafa">
+                                        <cellValueFactory>
+                                            <PropertyValueFactory property="codParafa" />
+                                        </cellValueFactory>
+                                    </TableColumn>
+                                </columns>
+                            </TableView>
 
-                        <Label fx:id="titluListaAngajati" style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Listă Angajați" />
+                        </children>
+                    </VBox>
 
-                        <TableView fx:id="angajatiTable" VBox.vgrow="ALWAYS">
-                            <columns>
-                                <TableColumn prefWidth="50.0" text="ID">
-                                    <cellValueFactory>
-                                        <PropertyValueFactory property="angajatID" />
-                                    </cellValueFactory>
-                                </TableColumn>
-                                <TableColumn prefWidth="150.0" text="Nume">
-                                    <cellValueFactory>
-                                        <PropertyValueFactory property="nume" />
-                                    </cellValueFactory>
-                                </TableColumn>
-                                <TableColumn prefWidth="150.0" text="Prenume">
-                                    <cellValueFactory>
-                                        <PropertyValueFactory property="prenume" />
-                                    </cellValueFactory>
-                                </TableColumn>
-                                <TableColumn prefWidth="100.0" text="Cod Parafa">
-                                    <cellValueFactory>
-                                        <PropertyValueFactory property="codParafa" />
-                                    </cellValueFactory>
-                                </TableColumn>
-                            </columns>
-                        </TableView>
+                    <VBox spacing="10" style="-fx-padding: 10;">
+                        <children>
+                            <Label fx:id="titluVanzariAngajat" styleClass="header-title" text="Vanzari Angajat Selectat" />
+                            <TableView fx:id="vanzariAngajatTable" VBox.vgrow="ALWAYS">
+                                <columns>
+                                    <TableColumn fx:id="colVanzareID" prefWidth="80.0" text="Vanzare ID" />
+                                    <TableColumn fx:id="colVanzareData" prefWidth="150.0" text="Data Vanzarii" />
+                                    <TableColumn fx:id="colVanzareTotal" prefWidth="120.0" text="Total Bon (Lei)" />
+                                </columns>
+                            </TableView>
+                            <Label text="* Selectați un angajat din stânga pentru a vedea vânzările." style="-fx-font-style: italic; -fx-text-fill: #555;" />
+                        </children>
+                    </VBox>
 
-                        <Button fx:id="testQueriesButton"
-                                text="Rulează Interogări Test (Verifică Consola)"
-                                onAction="#onTestQueriesClick"
-                                style="-fx-background-color: #f0ad4e; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand;"
-                                maxWidth="Infinity" /> </children>
-                </VBox>
+                </SplitPane>
             </content>
         </Tab>
 

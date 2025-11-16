@@ -31,7 +31,7 @@ public class BonItem {
     public double getPretTotal() { return pretTotal.get(); }
     public int getStocDisponibil() { return stocDisponibil; }
 
-    // Settere (pentru a actualiza cantitatea)
+    // Settere
     public void setCantitateVanduta(int cantitate) {
         this.cantitateVanduta.set(cantitate);
         this.pretTotal.set(this.pretUnitar.get() * cantitate);

@@ -3,10 +3,9 @@ package com.example.farmaciebdproiect;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
-// Aceasta clasa reprezinta un rand din tabela Angajati
 public class Angajat {
 
-    // Folosim 'Property' pentru ca JavaFX sa le poata "observa"
+    // Folosim Property pentru ca JavaFX sa le poata observa
     private final SimpleIntegerProperty angajatID;
     private final SimpleStringProperty nume;
     private final SimpleStringProperty prenume;
