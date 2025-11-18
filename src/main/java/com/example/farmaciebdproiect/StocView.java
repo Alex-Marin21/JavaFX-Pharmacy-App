@@ -36,25 +36,19 @@ public class StocView {
     public double getPretVanzare() { return pretVanzare.get(); }
 
 
-    // --- SETTERE CORECTATE ---
-    // Acestea trebuie sa fie 'void' si sa modifice proprietatea corecta
-
     public void setLotID(int lotID) {
         this.lotID.set(lotID);
     }
 
     public void setCantitateStoc(int cantitateStoc){
-        // AICI ERA BUG-UL: Trebuia 'this.cantitateStoc', NU 'this.lotID'
         this.cantitateStoc.set(cantitateStoc);
     }
 
     public void setDataExpirare(LocalDate dataExpirare){
-        // AICI ERA BUG-UL: Trebuia 'this.dataExpirare'
         this.dataExpirare.set(dataExpirare.toString());
     }
 
     public void setPretVanzare(double pretVanzare){
-        // AICI ERA BUG-UL: Trebuia 'this.pretVanzare'
         this.pretVanzare.set(pretVanzare);
     }
 }

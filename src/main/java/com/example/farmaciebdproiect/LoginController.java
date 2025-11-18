@@ -47,13 +47,9 @@ public class LoginController implements Initializable {
     @FXML
     private Label mesajLabel;
 
-    /**
-     * Metoda apelata automat la incarcarea FXML-ului.
-     * Seteaza stilurile si pictogramele.
-     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        // Setăm clasele de stil pe care le vom defini în CSS
+
         if (loginContainer != null) {
             loginContainer.getStyleClass().add("login-container");
         }
@@ -61,7 +57,7 @@ public class LoginController implements Initializable {
             titluLogin.getStyleClass().add("header-title");
         }
 
-        // Setăm pictogramele
+        // Setam pictogramele
         if (loginButton != null) {
             loginButton.setGraphic(createIcon("Images/icons8-man-50.png", 16));
             loginButton.setId("loginButton"); // Setam ID pentru CSS
@@ -69,7 +65,6 @@ public class LoginController implements Initializable {
 
         // --- BLOC NOU: Adaugare "Enter" pentru login ---
 
-        // Când apeși ENTER pe câmpul de nume, mută focusul la parafă
         if (numeField != null) {
             numeField.setOnKeyPressed(event -> {
                 if (event.getCode() == KeyCode.ENTER) {
@@ -78,7 +73,6 @@ public class LoginController implements Initializable {
             });
         }
 
-        // Când apeși ENTER pe câmpul de parafă, apasă butonul de login
         if (parafaField != null) {
             parafaField.setOnKeyPressed(event -> {
                 if (event.getCode() == KeyCode.ENTER) {
@@ -86,7 +80,6 @@ public class LoginController implements Initializable {
                 }
             });
         }
-        // --- SFÂRȘIT BLOC NOU ---
     }
 
     @FXML
@@ -161,9 +154,7 @@ public class LoginController implements Initializable {
         new Thread(loginTask).start();
     }
 
-    /**
-     * Valideaza credentialele in baza de date.
-     */
+
     private Angajat validateLogin(String nume, String codParafa) throws SQLException {
         String sqlQuery = "SELECT AngajatID, Nume, Prenume, CodParafa FROM Angajati WHERE Nume = ? AND CodParafa = ?";
 
@@ -188,9 +179,6 @@ public class LoginController implements Initializable {
         }
     }
 
-    /**
-     * Metoda ajutatoare pentru a crea un ImageView dintr-o cale.
-     */
     private ImageView createIcon(String path, int size) {
         try {
             Image img = new Image(getClass().getResourceAsStream(path));

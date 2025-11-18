@@ -30,6 +30,11 @@ import java.util.ResourceBundle;
 
 public class DashboardController implements Initializable {
 
+    //=========================================================================
+    // SECTIUNEA 1: Variabile FXML
+    //=========================================================================
+
+    //--- Etichete Titlu
     @FXML private Label titluStocCurent;
     @FXML private Label titluStocDisponibil;
     @FXML private Label titluBonCurent;
@@ -37,134 +42,109 @@ public class DashboardController implements Initializable {
     @FXML private Label titluFurnizoriDisponibili;
     @FXML private Label titluListaFurnizori;
     @FXML private Label titluListaAngajati;
+    @FXML private Label titluVanzariAngajat;
+    @FXML private Label titluProduseEpuizate;
+    @FXML private Label titluListaMedicamente;
+    @FXML private Label titluStocFurnizor;
 
-    @FXML
-    private Label titluVanzariAngajat;
-    @FXML
-    private TableView<VanzareRaport> vanzariAngajatTable;
-    @FXML
-    private TableColumn<VanzareRaport, Integer> colVanzareID;
-    @FXML
-    private TableColumn<VanzareRaport, String> colVanzareData;
-    @FXML
-    private TableColumn<VanzareRaport, Double> colVanzareTotal;
-
+    //--- Tab-uri
     @FXML private Tab stocuriTab;
     @FXML private Tab comenziTab;
     @FXML private Tab vanzariTab;
     @FXML private Tab furnizoriTab;
     @FXML private Tab angajatiTab;
 
-    private final ObservableList<ComandaProdus> comenziProduseList = FXCollections.observableArrayList();
-    private final ObservableList<Medicament> produseEpuizateList = FXCollections.observableArrayList();
-    private final ObservableList<ComandaFurnizor> comenziFurnizoriList = FXCollections.observableArrayList();
-    @FXML
-    private TableView<ComandaProdus> comenziProduseTable;
-    @FXML
-    private Label titluProduseEpuizate;
-    @FXML
-    private TableView<Medicament> produseEpuizateTable;
-    @FXML
-    private TableColumn<Medicament, String> colEpuizatNume;
-    @FXML
-    private TableColumn<Medicament, String> colEpuizatDozaj;
-    @FXML
-    private TableView<ComandaFurnizor> comenziFurnizoriTable;
-    @FXML
-    private TableColumn<ComandaProdus, String> colComandaNume;
-    @FXML
-    private TableColumn<ComandaProdus, Integer> colComandaStoc;
-    @FXML
-    private TableColumn<ComandaFurnizor, String> colComandaFurnizor;
-    @FXML
-    private TableColumn<ComandaFurnizor, Integer> colComandaTimp;
-    @FXML
-    private Button plaseazaComandaButton;
-    private boolean comenziDataLoaded = false;
+    //--- Fila Angajati
+    @FXML private TableView<VanzareRaport> vanzariAngajatTable;
+    @FXML private TableColumn<VanzareRaport, Integer> colVanzareID;
+    @FXML private TableColumn<VanzareRaport, String> colVanzareData;
+    @FXML private TableColumn<VanzareRaport, Double> colVanzareTotal;
+    @FXML private TableView<Angajat> angajatiTable;
 
-    private final ObservableList<VanzareRaport> vanzariAngajatList = FXCollections.observableArrayList();
+    //--- Fila Comenzi
+    @FXML private TableView<ComandaProdus> comenziProduseTable;
+    @FXML private TableView<Medicament> produseEpuizateTable;
+    @FXML private TableColumn<Medicament, String> colEpuizatNume;
+    @FXML private TableColumn<Medicament, String> colEpuizatDozaj;
+    @FXML private TableView<ComandaFurnizor> comenziFurnizoriTable;
+    @FXML private TableColumn<ComandaProdus, String> colComandaNume;
+    @FXML private TableColumn<ComandaProdus, Integer> colComandaStoc;
+    @FXML private TableColumn<ComandaFurnizor, String> colComandaFurnizor;
+    @FXML private TableColumn<ComandaFurnizor, Integer> colComandaTimp;
+    @FXML private Button plaseazaComandaButton;
 
-    private final ObservableList<Angajat> angajatiList = FXCollections.observableArrayList();
-    private final java.util.Set<Integer> angajatiInactiviIDs = new java.util.HashSet<>();
-    private final javafx.css.PseudoClass inactivePseudoClass = javafx.css.PseudoClass.getPseudoClass("inactive");
-    private final ObservableList<Furnizor> furnizoriList = FXCollections.observableArrayList();
-    private final ObservableList<StocView> stocFurnizorList = FXCollections.observableArrayList();
-    private final ObservableList<StocView> stocuriList = FXCollections.observableArrayList();
-    private final ObservableList<BonItem> bonCurentList = FXCollections.observableArrayList();
-    private final ObservableList<StocView> stocVanzariList = FXCollections.observableArrayList();
-    private Angajat angajatCurent;
+    //--- Fila Furnizori
+    @FXML private TableView<Furnizor> furnizoriTable;
+    @FXML private TableView<StocView> stocFurnizorTable;
+    @FXML private TableColumn<StocView, String> colStocFurnNume;
+    @FXML private TableColumn<StocView, String> colStocFurnLot;
+    @FXML private TableColumn<StocView, Integer> colStocFurnCant;
+    @FXML private Button adaugaFurnizorButton;
+    @FXML private Button stergeFurnizorButton;
 
-    @FXML
-    private TableView<Angajat> angajatiTable;
-    private boolean angajatiDataLoaded = false;
+    //--- Fila Stocuri
+    @FXML private TableView<StocView> stocuriTable;
+    @FXML private Button adaugaLotButton;
 
-    @FXML
-    private TableView<Furnizor> furnizoriTable;
-    @FXML
-    private Label titluStocFurnizor;
-    @FXML
-    private TableView<StocView> stocFurnizorTable;
-    @FXML
-    private TableColumn<StocView, String> colStocFurnNume;
-    @FXML
-    private TableColumn<StocView, String> colStocFurnLot;
-    @FXML
-    private TableColumn<StocView, Integer> colStocFurnCant;
-    private boolean furnizoriDataLoaded = false;
-    @FXML
-    private Button adaugaFurnizorButton;
-    @FXML
-    private Button stergeFurnizorButton;
+    //--- Fila Vanzari
+    @FXML private TableView<StocView> stocVanzariTable;
+    @FXML private TableColumn<StocView, String> colStocNume;
+    @FXML private TableColumn<StocView, String> colStocLot;
+    @FXML private TableColumn<StocView, Integer> colStocCant;
+    @FXML private TableColumn<StocView, Double> colStocPret;
+    @FXML private TableColumn<StocView, String> colStocExp;
+    @FXML private TextField cantitateVanzareField;
+    @FXML private Button adaugaPeBonButton;
+    @FXML private TableView<BonItem> bonCurentTable;
+    @FXML private TableColumn<BonItem, String> colBonNume;
+    @FXML private TableColumn<BonItem, Integer> colBonCant;
+    @FXML private TableColumn<BonItem, Double> colBonPretU;
+    @FXML private TableColumn<BonItem, Double> colBonPretT;
+    @FXML private Label totalBonLabel;
+    @FXML private Button stergeProdusButton;
+    @FXML private Button finalizeazaVanzareButton;
 
-    @FXML
-    private TableView<StocView> stocuriTable;
-    private boolean stocuriDataLoaded = false;
-    @FXML
-    private Button adaugaLotButton;
-
-    @FXML
-    private TableView<StocView> stocVanzariTable;
-    @FXML
-    private TableColumn<StocView, String> colStocNume;
-    @FXML
-    private TableColumn<StocView, String> colStocLot;
-    @FXML
-    private TableColumn<StocView, Integer> colStocCant;
-    @FXML
-    private TableColumn<StocView, Double> colStocPret;
-    @FXML
-    private TableColumn<StocView, String> colStocExp;
-    @FXML
-    private TextField cantitateVanzareField;
-    @FXML
-    private Button adaugaPeBonButton;
-    @FXML
-    private TableView<BonItem> bonCurentTable;
-    @FXML
-    private TableColumn<BonItem, String> colBonNume;
-    @FXML
-    private TableColumn<BonItem, Integer> colBonCant;
-    @FXML
-    private TableColumn<BonItem, Double> colBonPretU;
-    @FXML
-    private TableColumn<BonItem, Double> colBonPretT;
-    @FXML
-    private Label totalBonLabel;
-    @FXML
-    private Button stergeProdusButton;
-    @FXML
-    private Button finalizeazaVanzareButton;
-    private boolean stocVanzariDataLoaded = false;
-
-    private final ObservableList<Medicament> medicamenteList = FXCollections.observableArrayList();
-    private boolean medicamenteDataLoaded = false;
-    @FXML private Label titluListaMedicamente;
+    //--- Fila Medicamente
     @FXML private TableView<Medicament> medicamenteTable;
     @FXML private TableColumn<Medicament, Integer> colMedID;
     @FXML private TableColumn<Medicament, String> colMedNume;
     @FXML private TableColumn<Medicament, String> colMedDozaj;
     @FXML private Button adaugaMedicamentButton;
     @FXML private Button stergeMedicamentButton;
+
+    //=========================================================================
+    // SECTIUNEA 2: Variabile de Stare si Liste
+    //=========================================================================
+
+    //--- Liste de date
+    private final ObservableList<ComandaProdus> comenziProduseList = FXCollections.observableArrayList();
+    private final ObservableList<Medicament> produseEpuizateList = FXCollections.observableArrayList();
+    private final ObservableList<ComandaFurnizor> comenziFurnizoriList = FXCollections.observableArrayList();
+    private final ObservableList<VanzareRaport> vanzariAngajatList = FXCollections.observableArrayList();
+    private final ObservableList<Angajat> angajatiList = FXCollections.observableArrayList();
+    private final ObservableList<Furnizor> furnizoriList = FXCollections.observableArrayList();
+    private final ObservableList<StocView> stocFurnizorList = FXCollections.observableArrayList();
+    private final ObservableList<StocView> stocuriList = FXCollections.observableArrayList();
+    private final ObservableList<BonItem> bonCurentList = FXCollections.observableArrayList();
+    private final ObservableList<StocView> stocVanzariList = FXCollections.observableArrayList();
+    private final ObservableList<Medicament> medicamenteList = FXCollections.observableArrayList();
+
+    //--- Stare
+    private Angajat angajatCurent;
+    private boolean comenziDataLoaded = false;
+    private boolean angajatiDataLoaded = false;
+    private boolean furnizoriDataLoaded = false;
+    private boolean stocuriDataLoaded = false;
+    private boolean stocVanzariDataLoaded = false;
+    private boolean medicamenteDataLoaded = false;
+
+    //--- Stare CSS pentru angajatii inactivi
+    private final java.util.Set<Integer> angajatiInactiviIDs = new java.util.HashSet<>();
+    private final javafx.css.PseudoClass inactivePseudoClass = javafx.css.PseudoClass.getPseudoClass("inactive");
+
+    //=========================================================================
+    // SECTIUNEA 3: Initializare
+    //=========================================================================
 
     public void initData(Angajat angajat) {
         this.angajatCurent = angajat;
@@ -180,50 +160,28 @@ public class DashboardController implements Initializable {
         if (furnizoriTab != null) furnizoriTab.setGraphic(createIcon("Images/icons8-truck.gif", 20));
         if (angajatiTab != null) angajatiTab.setGraphic(createIcon("Images/icons8-man-50.png", 20));
 
-        if (adaugaPeBonButton != null) {
-            adaugaPeBonButton.setId("butonAdauga");
-            adaugaPeBonButton.setGraphic(createIcon("Images/icons8-add-50.png", 16));
-        }
-        if (stergeProdusButton != null) {
-            stergeProdusButton.setId("butonSterge");
-            stergeProdusButton.setGraphic(createIcon("Images/icons8-delete-50.png", 16));
-        }
-        if (finalizeazaVanzareButton != null) {
-            finalizeazaVanzareButton.setId("butonFinalizeaza");
-            finalizeazaVanzareButton.setGraphic(createIcon("Images/icons8-check.gif", 16));
-        }
-        if (plaseazaComandaButton != null) {
-            plaseazaComandaButton.setId("butonComanda");
-            plaseazaComandaButton.setGraphic(createIcon("Images/icons8-truck.gif", 16));
-        }
-        if (adaugaFurnizorButton != null) {
-            adaugaFurnizorButton.setId("butonAdauga");
-            adaugaFurnizorButton.setGraphic(createIcon("Images/icons8-add-50.png", 16));
-        }
-        if (stergeFurnizorButton != null) {
-            stergeFurnizorButton.setId("butonSterge");
-            stergeFurnizorButton.setGraphic(createIcon("Images/icons8-delete-50.png", 16));
-        }
-        if (adaugaMedicamentButton != null) {
-            adaugaMedicamentButton.setId("butonAdauga");
-            adaugaMedicamentButton.setGraphic(createIcon("Images/icons8-add-50.png", 16));
-        }
-        if (stergeMedicamentButton != null) {
-            stergeMedicamentButton.setId("butonSterge");
-            stergeMedicamentButton.setGraphic(createIcon("Images/icons8-delete-50.png", 16));
-        }
-        if (adaugaLotButton != null) {
-            adaugaLotButton.setId("butonAdauga");
-            adaugaLotButton.setGraphic(createIcon("Images/icons8-add-50.png", 16));
-        }
+        //--- Atribuie ID-uri butoanelor pentru CSS
+        if (adaugaPeBonButton != null) adaugaPeBonButton.getStyleClass().add("buton-succes");
+        if (stergeProdusButton != null) stergeProdusButton.getStyleClass().add("buton-pericol");
+        if (finalizeazaVanzareButton != null) finalizeazaVanzareButton.getStyleClass().add("buton-primar");
+        if (plaseazaComandaButton != null) plaseazaComandaButton.getStyleClass().add("buton-avertisment");
+        if (adaugaFurnizorButton != null) adaugaFurnizorButton.getStyleClass().add("buton-succes");
+        if (stergeFurnizorButton != null) stergeFurnizorButton.getStyleClass().add("buton-pericol");
+        if (adaugaMedicamentButton != null) adaugaMedicamentButton.getStyleClass().add("buton-succes");
+        if (stergeMedicamentButton != null) stergeMedicamentButton.getStyleClass().add("buton-pericol");
+        if (adaugaLotButton != null) adaugaLotButton.getStyleClass().add("buton-succes");
 
+        //--- Atribuie clasa de stil pentru titluri
         if (titluStocCurent != null) titluStocCurent.getStyleClass().add("header-title");
         if (titluStocDisponibil != null) titluStocDisponibil.getStyleClass().add("header-title");
         if (titluBonCurent != null) titluBonCurent.getStyleClass().add("header-title");
         if (titluProduseCritice != null) titluProduseCritice.getStyleClass().add("header-title");
+        if (titluProduseEpuizate != null) titluProduseEpuizate.getStyleClass().add("header-title");
         if (titluFurnizoriDisponibili != null) titluFurnizoriDisponibili.getStyleClass().add("header-title");
         if (titluListaFurnizori != null) titluListaFurnizori.getStyleClass().add("header-title");
         if (titluListaAngajati != null) titluListaAngajati.getStyleClass().add("header-title");
+        if (titluVanzariAngajat != null) titluVanzariAngajat.getStyleClass().add("header-title");
+        if (titluStocFurnizor != null) titluStocFurnizor.getStyleClass().add("header-title");
         if (titluListaMedicamente != null) titluListaMedicamente.getStyleClass().add("header-title");
 
         // --- Setup Fila Angajati ---
@@ -233,7 +191,6 @@ public class DashboardController implements Initializable {
             colVanzareTotal.setCellValueFactory(new PropertyValueFactory<>("totalBon"));
             vanzariAngajatTable.setItems(vanzariAngajatList);
 
-            // Listener pentru selectia randului din tabelul de angajati
             angajatiTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
                 if (newSelection != null) {
                     loadVanzariPentruAngajat(newSelection);
@@ -242,10 +199,8 @@ public class DashboardController implements Initializable {
                 }
             });
 
-            // Listener pentru deschiderea tab-ului
             angajatiTab.setOnSelectionChanged(event -> {
                 if (angajatiTab.isSelected() && !angajatiDataLoaded) {
-                    System.out.println("Se incarca datele angajatilor...");
                     loadAngajatiData();
                     angajatiDataLoaded = true;
                 }
@@ -256,9 +211,7 @@ public class DashboardController implements Initializable {
                 @Override
                 protected void updateItem(Angajat angajat, boolean empty) {
                     super.updateItem(angajat, empty);
-
                     pseudoClassStateChanged(inactivePseudoClass, false);
-
                     if (angajat != null && !empty) {
                         boolean isInactive = angajatiInactiviIDs.contains(angajat.getAngajatID());
                         pseudoClassStateChanged(inactivePseudoClass, isInactive);
@@ -274,7 +227,6 @@ public class DashboardController implements Initializable {
             colStocFurnCant.setCellValueFactory(new PropertyValueFactory<>("cantitateStoc"));
             stocFurnizorTable.setItems(stocFurnizorList);
 
-            // Listener pentru selectia randului din tabelul de furnizori
             furnizoriTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
                 if (newSelection != null) {
                     loadStocPentruFurnizor(newSelection);
@@ -286,7 +238,6 @@ public class DashboardController implements Initializable {
 
             furnizoriTab.setOnSelectionChanged(event -> {
                 if (furnizoriTab.isSelected() && !furnizoriDataLoaded) {
-                    System.out.println("Se incarca datele furnizorilor...");
                     loadFurnizoriData();
                     furnizoriDataLoaded = true;
                 }
@@ -295,7 +246,6 @@ public class DashboardController implements Initializable {
 
         // --- Setup Fila Stocuri ---
         if (stocuriTable != null) {
-            System.out.println("Se incarca datele de stoc...");
             loadStocuriData(stocuriTable, stocuriList);
             stocuriDataLoaded = true;
         }
@@ -318,7 +268,6 @@ public class DashboardController implements Initializable {
             setupColoaneVanzari();
             vanzariTab.setOnSelectionChanged(event -> {
                 if (vanzariTab.isSelected() && !stocVanzariDataLoaded) {
-                    System.out.println("Se incarca datele de stoc pentru vanzari...");
                     loadStocuriData(stocVanzariTable, stocVanzariList);
                     stocVanzariDataLoaded = true;
                 } else if (vanzariTab.isSelected()) {
@@ -330,339 +279,73 @@ public class DashboardController implements Initializable {
 
         // --- Setup Fila Comenzi ---
         if (comenziTab != null) {
-
-            // Configurare Tabela 1 (Stanga Sus - Stoc Critic)
             colComandaNume.setCellValueFactory(new PropertyValueFactory<>("numeMedicament"));
             colComandaStoc.setCellValueFactory(new PropertyValueFactory<>("totalStoc"));
             comenziProduseTable.setItems(comenziProduseList);
 
-            // Configurare Tabela 2 (Stanga Jos - Stoc Epuizat)
             colEpuizatNume.setCellValueFactory(new PropertyValueFactory<>("numeMedicament"));
             colEpuizatDozaj.setCellValueFactory(new PropertyValueFactory<>("dozaj"));
             produseEpuizateTable.setItems(produseEpuizateList);
 
-            // Configurare Tabela 3 (Dreapta - Furnizori)
             colComandaFurnizor.setCellValueFactory(new PropertyValueFactory<>("numeFurnizor"));
             colComandaTimp.setCellValueFactory(new PropertyValueFactory<>("timpLivrare"));
             comenziFurnizoriTable.setItems(comenziFurnizoriList);
 
-            // Listener pentru deschiderea Tab-ului
             comenziTab.setOnSelectionChanged(event -> {
                 if (comenziTab.isSelected() && !comenziDataLoaded) {
-                    System.out.println("Se incarca datele pentru comenzi...");
                     loadComenziProduseData();
                     comenziDataLoaded = true;
                 }
             });
 
-            // Listener Tabela 1 (Stoc Critic)
+            // Listener Tabela Stoc Critic
             comenziProduseTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
                 if (newSelection != null) {
                     produseEpuizateTable.getSelectionModel().clearSelection();
-
-                    Task<ObservableList<ComandaFurnizor>> loadFurnizoriTask = new Task<>() {
-                        @Override
-                        protected ObservableList<ComandaFurnizor> call() throws Exception {
-                            return getFurnizoriPentruProdus(newSelection.getMedicamentID());
-                        }
-                    };
-                    loadFurnizoriTask.setOnSucceeded(e -> {
-                        comenziFurnizoriList.setAll(loadFurnizoriTask.getValue());
-                    });
-                    loadFurnizoriTask.setOnFailed(e -> {
-                        loadFurnizoriTask.getException().printStackTrace();
-                        afiseazaAlerta("Eroare Baza Date", null, "Nu s-au putut incarca furnizorii.", Alert.AlertType.ERROR);
-                    });
-                    new Thread(loadFurnizoriTask).start();
-                } else {
-                    if (produseEpuizateTable.getSelectionModel().getSelectedItem() == null) {
-                        comenziFurnizoriList.clear();
-                    }
+                    incarcaFurnizoriPentruProdus(newSelection.getMedicamentID());
+                } else if (produseEpuizateTable.getSelectionModel().getSelectedItem() == null) {
+                    comenziFurnizoriList.clear();
                 }
             });
 
-            // Listener Tabela 2 (Stoc Epuizat)
+            // Listener Tabela Stoc Epuizat
             produseEpuizateTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
                 if (newSelection != null) {
                     comenziProduseTable.getSelectionModel().clearSelection();
-
-                    Task<ObservableList<ComandaFurnizor>> loadFurnizoriTask = new Task<>() {
-                        @Override
-                        protected ObservableList<ComandaFurnizor> call() throws Exception {
-                            return getFurnizoriPentruProdus(newSelection.getMedicamentID());
-                        }
-                    };
-                    loadFurnizoriTask.setOnSucceeded(e -> {
-                        comenziFurnizoriList.setAll(loadFurnizoriTask.getValue());
-                    });
-                    loadFurnizoriTask.setOnFailed(e -> {
-                        loadFurnizoriTask.getException().printStackTrace();
-                        afiseazaAlerta("Eroare Baza Date", null, "Nu s-au putut incarca furnizorii.", Alert.AlertType.ERROR);
-                    });
-                    new Thread(loadFurnizoriTask).start();
-                } else {
-                    if (comenziProduseTable.getSelectionModel().getSelectedItem() == null) {
-                        comenziFurnizoriList.clear();
-                    }
+                    incarcaFurnizoriPentruProdus(newSelection.getMedicamentID());
+                } else if (comenziProduseTable.getSelectionModel().getSelectedItem() == null) {
+                    comenziFurnizoriList.clear();
                 }
             });
         }
     }
 
-    // Incarca vanzarile pentru un angajat selectat (din Tab-ul Angajati)
-    private void loadVanzariPentruAngajat(Angajat angajat) {
-        vanzariAngajatList.clear();
-
-        String sql = "SELECT v.VanzareID, v.DataVanzare, v.TotalBon " +
-                "FROM Vanzari v " +
-                "JOIN Angajati a ON v.AngajatID = a.AngajatID " +
-                "WHERE a.AngajatID = ? " +
-                "ORDER BY v.DataVanzare DESC";
-
-        Task<ObservableList<VanzareRaport>> loadVanzariTask = new Task<>() {
+    private void incarcaFurnizoriPentruProdus(int medicamentID) {
+        Task<ObservableList<ComandaFurnizor>> loadFurnizoriTask = new Task<>() {
             @Override
-            protected ObservableList<VanzareRaport> call() throws Exception {
-                ObservableList<VanzareRaport> vanzari = FXCollections.observableArrayList();
-                try (Connection conn = DatabaseConnection.getConnection();
-                     PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
-                    pstmt.setInt(1, angajat.getAngajatID());
-                    try (ResultSet rs = pstmt.executeQuery()) {
-                        while (rs.next()) {
-                            vanzari.add(new VanzareRaport(
-                                    rs.getInt("VanzareID"),
-                                    rs.getDate("DataVanzare"),
-                                    rs.getDouble("TotalBon")
-                            ));
-                        }
-                    }
-                }
-                return vanzari;
+            protected ObservableList<ComandaFurnizor> call() throws Exception {
+                return getFurnizoriPentruProdus(medicamentID);
             }
         };
-
-        loadVanzariTask.setOnSucceeded(e -> {
-            vanzariAngajatList.setAll(loadVanzariTask.getValue());
-            if (vanzariAngajatList.isEmpty()) {
-                titluVanzariAngajat.setText("Fara vanzari pentru " + angajat.getNume());
-            } else {
-                titluVanzariAngajat.setText("Vanzari pentru " + angajat.getNume());
-            }
+        loadFurnizoriTask.setOnSucceeded(e -> {
+            comenziFurnizoriList.setAll(loadFurnizoriTask.getValue());
         });
-
-        loadVanzariTask.setOnFailed(e -> {
-            afiseazaAlerta("Eroare Baza Date", null, "Nu s-au putut incarca vanzarile.", Alert.AlertType.ERROR);
-            loadVanzariTask.getException().printStackTrace();
+        loadFurnizoriTask.setOnFailed(e -> {
+            loadFurnizoriTask.getException().printStackTrace();
+            afiseazaAlerta("Eroare Baza Date", null, "Nu s-au putut incarca furnizorii.", Alert.AlertType.ERROR);
         });
-
-        new Thread(loadVanzariTask).start();
+        new Thread(loadFurnizoriTask).start();
     }
 
-    // Incarca stocul pentru un furnizor selectat (din Tab-ul Furnizori)
-    private void loadStocPentruFurnizor(Furnizor furnizor) {
-        stocFurnizorList.clear();
 
-        String sql = "SELECT m.NumeMedicament, m.Dozaj, s.LotID, s.CodLot, s.CantitateStoc, s.DataExpirare, s.PretVanzare " +
-                "FROM StocLoturi s " +
-                "JOIN Medicamente m ON s.MedicamentID = m.MedicamentID " +
-                "JOIN MedicamenteFurnizori mf ON m.MedicamentID = mf.MedicamentID " +
-                "JOIN Furnizori f ON mf.FurnizorID = f.FurnizorID " +
-                "WHERE f.FurnizorID = ? AND s.CantitateStoc > 0";
-
-        Task<ObservableList<StocView>> loadStocTask = new Task<>() {
-            @Override
-            protected ObservableList<StocView> call() throws Exception {
-                ObservableList<StocView> stoc = FXCollections.observableArrayList();
-                try (Connection conn = DatabaseConnection.getConnection();
-                     PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
-                    pstmt.setInt(1, furnizor.getFurnizorID());
-                    try (ResultSet rs = pstmt.executeQuery()) {
-                        while (rs.next()) {
-                            stoc.add(new StocView(
-                                    rs.getInt("LotID"),
-                                    rs.getString("NumeMedicament"),
-                                    rs.getString("Dozaj"),
-                                    rs.getString("CodLot"),
-                                    rs.getInt("CantitateStoc"),
-                                    rs.getDate("DataExpirare").toLocalDate(),
-                                    rs.getDouble("PretVanzare")
-                            ));
-                        }
-                    }
-                }
-                return stoc;
-            }
-        };
-
-        loadStocTask.setOnSucceeded(e -> {
-            stocFurnizorList.setAll(loadStocTask.getValue());
-            titluStocFurnizor.setText("Stoc de la " + furnizor.getNumeFurnizor());
-        });
-
-        loadStocTask.setOnFailed(e -> {
-            afiseazaAlerta("Eroare Baza Date", null, "Nu s-a putut incarca stocul furnizorului.", Alert.AlertType.ERROR);
-            loadStocTask.getException().printStackTrace();
-        });
-
-        new Thread(loadStocTask).start();
-    }
-
-    private void setupColoaneVanzari() {
-        colStocNume.setCellValueFactory(new PropertyValueFactory<>("numeMedicament"));
-        colStocLot.setCellValueFactory(new PropertyValueFactory<>("codLot"));
-        colStocCant.setCellValueFactory(new PropertyValueFactory<>("cantitateStoc"));
-        colStocPret.setCellValueFactory(new PropertyValueFactory<>("pretVanzare"));
-        colStocExp.setCellValueFactory(new PropertyValueFactory<>("dataExpirare"));
-
-        colBonNume.setCellValueFactory(new PropertyValueFactory<>("numeMedicament"));
-        colBonCant.setCellValueFactory(new PropertyValueFactory<>("cantitateVanduta"));
-        colBonPretU.setCellValueFactory(new PropertyValueFactory<>("pretUnitar"));
-        colBonPretT.setCellValueFactory(new PropertyValueFactory<>("pretTotal"));
-    }
-
-    private void loadStocuriData(TableView<StocView> table, ObservableList<StocView> list) {
-        list.clear();
-        StringBuilder notificariStoc = new StringBuilder();
-        String sqlQuery = "SELECT m.MedicamentID, m.NumeMedicament, m.Dozaj, s.LotID, s.CodLot, s.CantitateStoc, s.DataExpirare, s.PretVanzare " +
-                "FROM StocLoturi s " +
-                "JOIN Medicamente m ON s.MedicamentID = m.MedicamentID " +
-                "WHERE s.CantitateStoc > 0 " +
-                "ORDER BY s.DataExpirare ASC";
-
-        try (Connection conn = DatabaseConnection.getConnection();
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(sqlQuery)) {
-
-            while (rs.next()) {
-                int cantitate = rs.getInt("CantitateStoc");
-                String numeMedicament = rs.getString("NumeMedicament");
-
-                if (cantitate < 10) {
-                    notificariStoc.append("- ").append(numeMedicament)
-                            .append(" (Lot: ").append(rs.getString("CodLot"))
-                            .append(") are doar ").append(cantitate).append(" bucati ramase.\n");
-                }
-
-                LocalDate dataExpirare = rs.getDate("DataExpirare").toLocalDate();
-                StocView stoc = new StocView(
-                        rs.getInt("LotID"),
-                        rs.getString("NumeMedicament"),
-                        rs.getString("Dozaj"),
-                        rs.getString("CodLot"),
-                        cantitate,
-                        dataExpirare,
-                        rs.getDouble("PretVanzare")
-                );
-                list.add(stoc);
-            }
-            table.setItems(list);
-
-            if (table == stocuriTable) {
-                stocVanzariList.setAll(list);
-            }
-
-            if (!notificariStoc.isEmpty()) {
-                if (table == stocuriTable) {
-                    afiseazaAlerta("Notificari Stoc Scazut", "Urmatoarele produse sunt pe terminate:", notificariStoc.toString(), Alert.AlertType.WARNING);
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("Eroare la incarcarea datelor de stoc.");
-        }
-    }
-
-    // Incarca datele pentru Tab-ul Comenzi (Stoc Critic si Stoc Epuizat)
-    private void loadComenziProduseData() {
-        comenziProduseList.clear();
-        produseEpuizateList.clear();
-
-        // Interogare Stoc Critic (intre 1 si 9 bucati)
-        String sqlCritic = "SELECT m.MedicamentID, m.NumeMedicament, SUM(s.CantitateStoc) AS TotalStoc " +
-                "FROM Medicamente m " +
-                "LEFT JOIN StocLoturi s ON m.MedicamentID = s.MedicamentID " +
-                "GROUP BY m.MedicamentID, m.NumeMedicament " +
-                "HAVING ISNULL(SUM(s.CantitateStoc), 0) < 10 AND ISNULL(SUM(s.CantitateStoc), 0) > 0 " +
-                "ORDER BY TotalStoc ASC";
-
-        // Interogare Stoc Epuizat (stoc 0 sau null)
-        String sqlEpuizat = "SELECT MedicamentID, NumeMedicament, Dozaj FROM Medicamente " +
-                "WHERE MedicamentID NOT IN (SELECT DISTINCT MedicamentID FROM StocLoturi WHERE CantitateStoc > 0)";
-
-        Task<Void> loadTask = new Task<>() {
-            @Override
-            protected Void call() throws Exception {
-                try (Connection conn = DatabaseConnection.getConnection()) {
-
-                    try (Statement stmt = conn.createStatement();
-                         ResultSet rs = stmt.executeQuery(sqlCritic)) {
-                        while (rs.next()) {
-                            comenziProduseList.add(new ComandaProdus(
-                                    rs.getInt("MedicamentID"),
-                                    rs.getString("NumeMedicament"),
-                                    rs.getInt("TotalStoc")
-                            ));
-                        }
-                    }
-
-                    try (Statement stmt = conn.createStatement();
-                         ResultSet rs = stmt.executeQuery(sqlEpuizat)) {
-                        while (rs.next()) {
-                            produseEpuizateList.add(new Medicament(
-                                    rs.getInt("MedicamentID"),
-                                    rs.getString("NumeMedicament"),
-                                    rs.getString("Dozaj")
-                            ));
-                        }
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    throw e;
-                }
-                return null;
-            }
-        };
-
-        loadTask.setOnFailed(e -> {
-            afiseazaAlerta("Eroare Baza Date", null, "Eroare la incarcarea listelor de comanda.", Alert.AlertType.ERROR);
-            loadTask.getException().printStackTrace();
-        });
-
-        new Thread(loadTask).start();
-    }
-
-    private ObservableList<ComandaFurnizor> getFurnizoriPentruProdus(int medicamentID) throws SQLException {
-        ObservableList<ComandaFurnizor> furnizoriLocali = FXCollections.observableArrayList();
-        String sqlQuery = "SELECT f.NumeFurnizor, mf.TimpLivrareEstimat " +
-                "FROM Furnizori f " +
-                "JOIN MedicamenteFurnizori mf ON f.FurnizorID = mf.FurnizorID " +
-                "WHERE mf.MedicamentID = ?";
-
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sqlQuery)) {
-            pstmt.setInt(1, medicamentID);
-            try (ResultSet rs = pstmt.executeQuery()) {
-                while (rs.next()) {
-                    furnizoriLocali.add(new ComandaFurnizor(
-                            rs.getString("NumeFurnizor"),
-                            rs.getInt("TimpLivrareEstimat")
-                    ));
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("Eroare la incarcarea furnizorilor pentru produs.");
-            throw new SQLException("Eroare la incarcarea furnizorilor.", e);
-        }
-        return furnizoriLocali;
-    }
+    //=========================================================================
+    // SECTIUNEA 4: Handlere de Evenimente (on...Click)
+    //=========================================================================
 
     @FXML
     private void onPlaseazaComandaClick() {
         String numeProdusSelectat = null;
 
-        // Determina produsul selectat din oricare tabel (Critic sau Epuizat)
         ComandaProdus produsCritic = comenziProduseTable.getSelectionModel().getSelectedItem();
         Medicament produsEpuizat = produseEpuizateTable.getSelectionModel().getSelectedItem();
 
@@ -672,13 +355,11 @@ public class DashboardController implements Initializable {
             numeProdusSelectat = produsEpuizat.getNumeMedicament();
         }
 
-        // Verifica daca un produs a fost selectat
         if (numeProdusSelectat == null) {
             afiseazaAlerta("Eroare Comanda", null, "Va rugam selectati un PRODUS de comandat (din oricare lista).", Alert.AlertType.WARNING);
             return;
         }
 
-        // Verifica daca un furnizor a fost selectat
         ComandaFurnizor furnizorSelectat = comenziFurnizoriTable.getSelectionModel().getSelectedItem();
         if (furnizorSelectat == null) {
             afiseazaAlerta("Eroare Comanda", null, "Va rugam selectati un FURNIZOR de la care sa comandati.", Alert.AlertType.WARNING);
@@ -691,70 +372,6 @@ public class DashboardController implements Initializable {
                         "Furnizor: " + furnizorSelectat.getNumeFurnizor() + "\n" +
                         "Timp estimat: " + furnizorSelectat.getTimpLivrare() + " zile.",
                 Alert.AlertType.INFORMATION);
-    }
-
-    private void loadAngajatiData() {
-        angajatiList.clear();
-        angajatiInactiviIDs.clear();
-
-        String sqlAngajati = "SELECT AngajatID, Nume, Prenume, CodParafa FROM Angajati";
-
-        // Incarca angajatii inactivi (fara vanzari) pentru colorare
-        String sqlInactivi = "SELECT AngajatID FROM Angajati " +
-                "WHERE AngajatID NOT IN (SELECT DISTINCT AngajatID FROM Vanzari)";
-
-        try (Connection conn = DatabaseConnection.getConnection()) {
-
-            try (Statement stmt = conn.createStatement();
-                 ResultSet rs = stmt.executeQuery(sqlAngajati)) {
-
-                while (rs.next()) {
-                    Angajat angajat = new Angajat(
-                            rs.getInt("AngajatID"),
-                            rs.getString("Nume"),
-                            rs.getString("Prenume"),
-                            rs.getString("CodParafa")
-                    );
-                    angajatiList.add(angajat);
-                }
-            }
-
-            try (Statement stmt = conn.createStatement();
-                 ResultSet rsInactivi = stmt.executeQuery(sqlInactivi)) {
-
-                while (rsInactivi.next()) {
-                    angajatiInactiviIDs.add(rsInactivi.getInt("AngajatID"));
-                }
-            }
-
-            angajatiTable.setItems(angajatiList);
-            angajatiTable.refresh();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            afiseazaAlerta("Eroare Baza Date", null, "Eroare la incarcarea datelor angajatilor.", Alert.AlertType.ERROR);
-        }
-    }
-
-    private void loadFurnizoriData() {
-        furnizoriList.clear();
-        String sqlQuery = "SELECT FurnizorID, NumeFurnizor, CUI, Telefon FROM Furnizori";
-        try (Connection conn = DatabaseConnection.getConnection();
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(sqlQuery)) {
-            while (rs.next()) {
-                Furnizor furnizor = new Furnizor(
-                        rs.getInt("FurnizorID"),
-                        rs.getString("NumeFurnizor"),
-                        rs.getString("CUI"),
-                        rs.getString("Telefon")
-                );
-                furnizoriList.add(furnizor);
-            }
-            furnizoriTable.setItems(furnizoriList);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     @FXML
@@ -779,6 +396,7 @@ public class DashboardController implements Initializable {
             return;
         }
 
+        // Verifica daca produsul (acelasi lot) este deja pe bon
         for (BonItem item : bonCurentList) {
             if (item.getLotID() == produsSelectat.getLotID()) {
                 int cantitateNoua = item.getCantitateVanduta() + cantitateDeVandut;
@@ -794,6 +412,7 @@ public class DashboardController implements Initializable {
             }
         }
 
+        // Adauga produsul ca item nou pe bon
         BonItem itemNou = new BonItem(
                 produsSelectat.getLotID(),
                 produsSelectat.getNumeMedicament(),
@@ -942,6 +561,7 @@ public class DashboardController implements Initializable {
             Task<Void> deleteTask = new Task<>() {
                 @Override
                 protected Void call() throws Exception {
+                    // Verifica daca furnizorul este legat de medicamente
                     String checkSql = "SELECT COUNT(*) FROM MedicamenteFurnizori WHERE FurnizorID = ?";
                     try (Connection conn = DatabaseConnection.getConnection();
                          PreparedStatement pstmtCheck = conn.prepareStatement(checkSql)) {
@@ -954,6 +574,7 @@ public class DashboardController implements Initializable {
                         }
                     }
 
+                    // Sterge furnizorul
                     String deleteSql = "DELETE FROM Furnizori WHERE FurnizorID = ?";
                     try (Connection conn = DatabaseConnection.getConnection();
                          PreparedStatement pstmtDelete = conn.prepareStatement(deleteSql)) {
@@ -977,51 +598,6 @@ public class DashboardController implements Initializable {
             });
 
             new Thread(deleteTask).start();
-        }
-    }
-
-    private void loadMedicamenteData() {
-        medicamenteList.clear();
-        String sqlQuery = "SELECT MedicamentID, NumeMedicament, Dozaj FROM Medicamente ORDER BY NumeMedicament";
-
-        try (Connection conn = DatabaseConnection.getConnection();
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(sqlQuery)) {
-
-            while (rs.next()) {
-                medicamenteList.add(new Medicament(
-                        rs.getInt("MedicamentID"),
-                        rs.getString("NumeMedicament"),
-                        rs.getString("Dozaj")
-                ));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            afiseazaAlerta("Eroare Baza Date", null, "Eroare la incarcarea nomenclatorului de medicamente.", Alert.AlertType.ERROR);
-        }
-    }
-
-    // Functie helper pentru a actualiza listele UI fara a reincarca totul
-    private void actualizeazaItemInListaUI(ObservableList<StocView> lista, StocView lotModificat) {
-        boolean gasitInLista = false;
-
-        // Cauta daca lotul exista deja in lista UI
-        for (StocView itemExistent : lista) {
-            if (itemExistent.getLotID() == lotModificat.getLotID()) {
-
-                // Daca exista, actualizeaza cantitatea (UPDATE)
-                itemExistent.setCantitateStoc(lotModificat.getCantitateStoc());
-                itemExistent.setDataExpirare(LocalDate.parse(lotModificat.getDataExpirare()));
-                itemExistent.setPretVanzare(lotModificat.getPretVanzare());
-
-                gasitInLista = true;
-                break;
-            }
-        }
-
-        if (!gasitInLista) {
-            // Daca nu exista, adauga-l in lista (INSERT)
-            lista.add(lotModificat);
         }
     }
 
@@ -1090,8 +666,9 @@ public class DashboardController implements Initializable {
                     Connection conn = null;
                     try {
                         conn = DatabaseConnection.getConnection();
-                        conn.setAutoCommit(false);
+                        conn.setAutoCommit(false); // Start Tranzactie
 
+                        // 1. Insereaza Medicamentul
                         String sqlMed = "INSERT INTO Medicamente (NumeMedicament, Dozaj) VALUES (?, ?)";
                         PreparedStatement pstmtMed = conn.prepareStatement(sqlMed, Statement.RETURN_GENERATED_KEYS);
                         pstmtMed.setString(1, medNou.getNumeMedicament());
@@ -1109,6 +686,7 @@ public class DashboardController implements Initializable {
                         }
                         pstmtMed.close();
 
+                        // 2. Insereaza legaturile cu furnizorii
                         if (!furnizoriSelectati.isEmpty()) {
                             String sqlLink = "INSERT INTO MedicamenteFurnizori (MedicamentID, FurnizorID) VALUES (?, ?)";
                             PreparedStatement pstmtLink = conn.prepareStatement(sqlLink);
@@ -1122,11 +700,11 @@ public class DashboardController implements Initializable {
                             pstmtLink.close();
                         }
 
-                        conn.commit();
+                        conn.commit(); // Finalizeaza Tranzactia
                         return medNou;
 
                     } catch (Exception e) {
-                        if (conn != null) conn.rollback();
+                        if (conn != null) conn.rollback(); // Anuleaza Tranzactia
                         throw new Exception("Eroare la salvarea medicamentului: " + e.getMessage(), e);
                     } finally {
                         if (conn != null) { conn.setAutoCommit(true); conn.close(); }
@@ -1169,6 +747,7 @@ public class DashboardController implements Initializable {
                     try {
                         conn = DatabaseConnection.getConnection();
 
+                        // Verifica daca medicamentul are stoc
                         String checkSql = "SELECT COUNT(*) FROM StocLoturi WHERE MedicamentID = ?";
                         try (PreparedStatement pstmtCheck = conn.prepareStatement(checkSql)) {
                             pstmtCheck.setInt(1, medSelectat.getMedicamentID());
@@ -1179,14 +758,16 @@ public class DashboardController implements Initializable {
                             }
                         }
 
-                        conn.setAutoCommit(false);
+                        conn.setAutoCommit(false); // Start Tranzactie
 
+                        // Sterge legaturile cu furnizorii
                         String sqlLink = "DELETE FROM MedicamenteFurnizori WHERE MedicamentID = ?";
                         try (PreparedStatement pstmtLink = conn.prepareStatement(sqlLink)) {
                             pstmtLink.setInt(1, medSelectat.getMedicamentID());
                             pstmtLink.executeUpdate();
                         }
 
+                        // Sterge medicamentul
                         String sqlMed = "DELETE FROM Medicamente WHERE MedicamentID = ?";
                         try (PreparedStatement pstmtMed = conn.prepareStatement(sqlMed)) {
                             pstmtMed.setInt(1, medSelectat.getMedicamentID());
@@ -1194,11 +775,11 @@ public class DashboardController implements Initializable {
                             if (rows == 0) { throw new Exception("Nu s-a sters niciun medicament."); }
                         }
 
-                        conn.commit();
+                        conn.commit(); // Finalizeaza Tranzactia
                         return null;
 
                     } catch (Exception e) {
-                        if (conn != null) conn.rollback();
+                        if (conn != null) conn.rollback(); // Anuleaza Tranzactia
                         throw new Exception(e.getMessage(), e);
                     } finally {
                         if (conn != null) { conn.setAutoCommit(true); conn.close(); }
@@ -1317,12 +898,7 @@ public class DashboardController implements Initializable {
                         conn.setAutoCommit(false);
 
                         int medicamentID = medSelectat.getMedicamentID();
-
                         String codLotCuratat = lotNou.getCodLot().trim().toUpperCase();
-                        if (codLotCuratat.isEmpty()) {
-                            throw new Exception("Codul lotului nu poate fi gol.");
-                        }
-
                         int cantitateAdaugata = lotNou.getCantitateStoc();
                         Date dataExpirareNoua = Date.valueOf(lotNou.getDataExpirare());
                         double pretVanzareNou = lotNou.getPretVanzare();
@@ -1337,8 +913,6 @@ public class DashboardController implements Initializable {
 
                         if (rs.next()) {
                             // Cazul 1: Lotul EXISTA (UPDATE)
-                            System.out.println("DEBUG: Lotul " + codLotCuratat + " gasit. Se face UPDATE.");
-
                             int lotIDExistent = rs.getInt("LotID");
                             int cantitateVeche = rs.getInt("CantitateStoc");
                             int cantitateTotala = cantitateVeche + cantitateAdaugata;
@@ -1359,8 +933,6 @@ public class DashboardController implements Initializable {
 
                         } else {
                             // Cazul 2: Lotul NU EXISTA (INSERT)
-                            System.out.println("DEBUG: Lotul " + codLotCuratat + " NU a fost gasit. Se face INSERT.");
-
                             String sqlInsert = "INSERT INTO StocLoturi (MedicamentID, CodLot, CantitateStoc, DataExpirare, PretVanzare) VALUES (?, ?, ?, ?, ?)";
                             PreparedStatement pstmtInsert = conn.prepareStatement(sqlInsert, Statement.RETURN_GENERATED_KEYS);
 
@@ -1389,7 +961,6 @@ public class DashboardController implements Initializable {
 
                     } catch (Exception e) {
                         if (conn != null) conn.rollback();
-                        System.err.println("DEBUG: Eroare majora in 'call()' la adaugare lot:");
                         e.printStackTrace();
                         throw new Exception("Eroare la salvarea lotului: " + e.getMessage(), e);
                     } finally {
@@ -1403,14 +974,10 @@ public class DashboardController implements Initializable {
 
             insertLotTask.setOnSucceeded(e -> {
                 StocView lotModificat = insertLotTask.getValue();
-
-                // Actualizeaza listele UI inteligent, fara a reincarca tot tabelul
                 actualizeazaItemInListaUI(stocuriList, lotModificat);
                 actualizeazaItemInListaUI(stocVanzariList, lotModificat);
-
                 stocuriTable.refresh();
                 stocVanzariTable.refresh();
-
                 afiseazaAlerta("Succes", null, "Lotul a fost adaugat sau actualizat in stoc.", Alert.AlertType.INFORMATION);
             });
 
@@ -1423,12 +990,317 @@ public class DashboardController implements Initializable {
         });
     }
 
+    //=========================================================================
+    // SECTIUNEA 5: Metode de Incarcare a Datelor
+    //=========================================================================
+
+    private void loadVanzariPentruAngajat(Angajat angajat) {
+        vanzariAngajatList.clear();
+        String sql = "SELECT v.VanzareID, v.DataVanzare, v.TotalBon " +
+                "FROM Vanzari v " +
+                "JOIN Angajati a ON v.AngajatID = a.AngajatID " +
+                "WHERE a.AngajatID = ? " +
+                "ORDER BY v.DataVanzare DESC";
+
+        Task<ObservableList<VanzareRaport>> loadVanzariTask = new Task<>() {
+            @Override
+            protected ObservableList<VanzareRaport> call() throws Exception {
+                ObservableList<VanzareRaport> vanzari = FXCollections.observableArrayList();
+                try (Connection conn = DatabaseConnection.getConnection();
+                     PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+                    pstmt.setInt(1, angajat.getAngajatID());
+                    try (ResultSet rs = pstmt.executeQuery()) {
+                        while (rs.next()) {
+                            vanzari.add(new VanzareRaport(
+                                    rs.getInt("VanzareID"),
+                                    rs.getDate("DataVanzare"),
+                                    rs.getDouble("TotalBon")
+                            ));
+                        }
+                    }
+                }
+                return vanzari;
+            }
+        };
+
+        loadVanzariTask.setOnSucceeded(e -> {
+            vanzariAngajatList.setAll(loadVanzariTask.getValue());
+            if (vanzariAngajatList.isEmpty()) {
+                titluVanzariAngajat.setText("Fara vanzari pentru " + angajat.getNume());
+            } else {
+                titluVanzariAngajat.setText("Vanzari pentru " + angajat.getNume());
+            }
+        });
+        loadVanzariTask.setOnFailed(e -> {
+            afiseazaAlerta("Eroare Baza Date", null, "Nu s-au putut incarca vanzarile.", Alert.AlertType.ERROR);
+            loadVanzariTask.getException().printStackTrace();
+        });
+        new Thread(loadVanzariTask).start();
+    }
+
+    private void loadStocPentruFurnizor(Furnizor furnizor) {
+        stocFurnizorList.clear();
+        String sql = "SELECT m.NumeMedicament, m.Dozaj, s.LotID, s.CodLot, s.CantitateStoc, s.DataExpirare, s.PretVanzare " +
+                "FROM StocLoturi s " +
+                "JOIN Medicamente m ON s.MedicamentID = m.MedicamentID " +
+                "JOIN MedicamenteFurnizori mf ON m.MedicamentID = mf.MedicamentID " +
+                "JOIN Furnizori f ON mf.FurnizorID = f.FurnizorID " +
+                "WHERE f.FurnizorID = ? AND s.CantitateStoc > 0";
+
+        Task<ObservableList<StocView>> loadStocTask = new Task<>() {
+            @Override
+            protected ObservableList<StocView> call() throws Exception {
+                ObservableList<StocView> stoc = FXCollections.observableArrayList();
+                try (Connection conn = DatabaseConnection.getConnection();
+                     PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+                    pstmt.setInt(1, furnizor.getFurnizorID());
+                    try (ResultSet rs = pstmt.executeQuery()) {
+                        while (rs.next()) {
+                            stoc.add(new StocView(
+                                    rs.getInt("LotID"),
+                                    rs.getString("NumeMedicament"),
+                                    rs.getString("Dozaj"),
+                                    rs.getString("CodLot"),
+                                    rs.getInt("CantitateStoc"),
+                                    rs.getDate("DataExpirare").toLocalDate(),
+                                    rs.getDouble("PretVanzare")
+                            ));
+                        }
+                    }
+                }
+                return stoc;
+            }
+        };
+
+        loadStocTask.setOnSucceeded(e -> {
+            stocFurnizorList.setAll(loadStocTask.getValue());
+            titluStocFurnizor.setText("Stoc de la " + furnizor.getNumeFurnizor());
+        });
+        loadStocTask.setOnFailed(e -> {
+            afiseazaAlerta("Eroare Baza Date", null, "Nu s-a putut incarca stocul furnizorului.", Alert.AlertType.ERROR);
+            loadStocTask.getException().printStackTrace();
+        });
+        new Thread(loadStocTask).start();
+    }
+
+    private void loadStocuriData(TableView<StocView> table, ObservableList<StocView> list) {
+        list.clear();
+        StringBuilder notificariStoc = new StringBuilder();
+        String sqlQuery = "SELECT m.MedicamentID, m.NumeMedicament, m.Dozaj, s.LotID, s.CodLot, s.CantitateStoc, s.DataExpirare, s.PretVanzare " +
+                "FROM StocLoturi s " +
+                "JOIN Medicamente m ON s.MedicamentID = m.MedicamentID " +
+                "WHERE s.CantitateStoc > 0 " +
+                "ORDER BY s.DataExpirare ASC";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sqlQuery)) {
+
+            while (rs.next()) {
+                int cantitate = rs.getInt("CantitateStoc");
+                String numeMedicament = rs.getString("NumeMedicament");
+
+                if (cantitate < 10) {
+                    notificariStoc.append("- ").append(numeMedicament)
+                            .append(" (Lot: ").append(rs.getString("CodLot"))
+                            .append(") are doar ").append(cantitate).append(" bucati ramase.\n");
+                }
+
+                LocalDate dataExpirare = rs.getDate("DataExpirare").toLocalDate();
+                StocView stoc = new StocView(
+                        rs.getInt("LotID"),
+                        rs.getString("NumeMedicament"),
+                        rs.getString("Dozaj"),
+                        rs.getString("CodLot"),
+                        cantitate,
+                        dataExpirare,
+                        rs.getDouble("PretVanzare")
+                );
+                list.add(stoc);
+            }
+            table.setItems(list);
+
+            if (table == stocuriTable) {
+                stocVanzariList.setAll(list);
+            }
+
+            if (!notificariStoc.isEmpty() && table == stocuriTable) {
+                afiseazaAlerta("Notificari Stoc Scazut", "Urmatoarele produse sunt pe terminate:", notificariStoc.toString(), Alert.AlertType.WARNING);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            afiseazaAlerta("Eroare Baza Date", null, "Eroare la incarcarea datelor de stoc.", Alert.AlertType.ERROR);
+        }
+    }
+
+    private void loadComenziProduseData() {
+        comenziProduseList.clear();
+        produseEpuizateList.clear();
+
+        String sqlCritic = "SELECT m.MedicamentID, m.NumeMedicament, SUM(s.CantitateStoc) AS TotalStoc " +
+                "FROM Medicamente m " +
+                "LEFT JOIN StocLoturi s ON m.MedicamentID = s.MedicamentID " +
+                "GROUP BY m.MedicamentID, m.NumeMedicament " +
+                "HAVING ISNULL(SUM(s.CantitateStoc), 0) < 10 AND ISNULL(SUM(s.CantitateStoc), 0) > 0 " +
+                "ORDER BY TotalStoc ASC";
+
+        String sqlEpuizat = "SELECT MedicamentID, NumeMedicament, Dozaj FROM Medicamente " +
+                "WHERE MedicamentID NOT IN (SELECT DISTINCT MedicamentID FROM StocLoturi WHERE CantitateStoc > 0)";
+
+        Task<Void> loadTask = new Task<>() {
+            @Override
+            protected Void call() throws Exception {
+                try (Connection conn = DatabaseConnection.getConnection()) {
+
+                    try (Statement stmt = conn.createStatement();
+                         ResultSet rs = stmt.executeQuery(sqlCritic)) {
+                        while (rs.next()) {
+                            comenziProduseList.add(new ComandaProdus(
+                                    rs.getInt("MedicamentID"),
+                                    rs.getString("NumeMedicament"),
+                                    rs.getInt("TotalStoc")
+                            ));
+                        }
+                    }
+
+                    try (Statement stmt = conn.createStatement();
+                         ResultSet rs = stmt.executeQuery(sqlEpuizat)) {
+                        while (rs.next()) {
+                            produseEpuizateList.add(new Medicament(
+                                    rs.getInt("MedicamentID"),
+                                    rs.getString("NumeMedicament"),
+                                    rs.getString("Dozaj")
+                            ));
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    throw e;
+                }
+                return null;
+            }
+        };
+
+        loadTask.setOnFailed(e -> {
+            afiseazaAlerta("Eroare Baza Date", null, "Eroare la incarcarea listelor de comanda.", Alert.AlertType.ERROR);
+            loadTask.getException().printStackTrace();
+        });
+        new Thread(loadTask).start();
+    }
+
+    private ObservableList<ComandaFurnizor> getFurnizoriPentruProdus(int medicamentID) throws SQLException {
+        ObservableList<ComandaFurnizor> furnizoriLocali = FXCollections.observableArrayList();
+        String sqlQuery = "SELECT f.NumeFurnizor, mf.TimpLivrareEstimat " +
+                "FROM Furnizori f " +
+                "JOIN MedicamenteFurnizori mf ON f.FurnizorID = mf.FurnizorID " +
+                "WHERE mf.MedicamentID = ?";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sqlQuery)) {
+            pstmt.setInt(1, medicamentID);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    furnizoriLocali.add(new ComandaFurnizor(
+                            rs.getString("NumeFurnizor"),
+                            rs.getInt("TimpLivrareEstimat")
+                    ));
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new SQLException("Eroare la incarcarea furnizorilor.", e);
+        }
+        return furnizoriLocali;
+    }
+
+    private void loadAngajatiData() {
+        angajatiList.clear();
+        angajatiInactiviIDs.clear();
+
+        String sqlAngajati = "SELECT AngajatID, Nume, Prenume, CodParafa FROM Angajati";
+        String sqlInactivi = "SELECT AngajatID FROM Angajati " +
+                "WHERE AngajatID NOT IN (SELECT DISTINCT AngajatID FROM Vanzari)";
+
+        try (Connection conn = DatabaseConnection.getConnection()) {
+
+            try (Statement stmt = conn.createStatement();
+                 ResultSet rs = stmt.executeQuery(sqlAngajati)) {
+                while (rs.next()) {
+                    Angajat angajat = new Angajat(
+                            rs.getInt("AngajatID"),
+                            rs.getString("Nume"),
+                            rs.getString("Prenume"),
+                            rs.getString("CodParafa")
+                    );
+                    angajatiList.add(angajat);
+                }
+            }
+
+            try (Statement stmt = conn.createStatement();
+                 ResultSet rsInactivi = stmt.executeQuery(sqlInactivi)) {
+                while (rsInactivi.next()) {
+                    angajatiInactiviIDs.add(rsInactivi.getInt("AngajatID"));
+                }
+            }
+            angajatiTable.setItems(angajatiList);
+            angajatiTable.refresh();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            afiseazaAlerta("Eroare Baza Date", null, "Eroare la incarcarea datelor angajatilor.", Alert.AlertType.ERROR);
+        }
+    }
+
+    private void loadFurnizoriData() {
+        furnizoriList.clear();
+        String sqlQuery = "SELECT FurnizorID, NumeFurnizor, CUI, Telefon FROM Furnizori";
+        try (Connection conn = DatabaseConnection.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sqlQuery)) {
+            while (rs.next()) {
+                Furnizor furnizor = new Furnizor(
+                        rs.getInt("FurnizorID"),
+                        rs.getString("NumeFurnizor"),
+                        rs.getString("CUI"),
+                        rs.getString("Telefon")
+                );
+                furnizoriList.add(furnizor);
+            }
+            furnizoriTable.setItems(furnizoriList);
+        } catch (Exception e) {
+            e.printStackTrace();
+            afiseazaAlerta("Eroare Baza Date", null, "Eroare la incarcarea furnizorilor.", Alert.AlertType.ERROR);
+        }
+    }
+
+    private void loadMedicamenteData() {
+        medicamenteList.clear();
+        String sqlQuery = "SELECT MedicamentID, NumeMedicament, Dozaj FROM Medicamente ORDER BY NumeMedicament";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sqlQuery)) {
+
+            while (rs.next()) {
+                medicamenteList.add(new Medicament(
+                        rs.getInt("MedicamentID"),
+                        rs.getString("NumeMedicament"),
+                        rs.getString("Dozaj")
+                ));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            afiseazaAlerta("Eroare Baza Date", null, "Eroare la incarcarea nomenclatorului de medicamente.", Alert.AlertType.ERROR);
+        }
+    }
+
     private boolean proceseazaVanzareaInBD() {
         Connection conn = null;
         try {
-            // Folosim o tranzactie pentru a asigura integritatea datelor
             conn = DatabaseConnection.getConnection();
-            conn.setAutoCommit(false);
+            conn.setAutoCommit(false); // Start Tranzactie
 
             // 1. Insereaza antetul vanzarii
             String sqlInsertVanzare = "INSERT INTO Vanzari (DataVanzare, AngajatID, TotalBon) VALUES (GETDATE(), ?, ?)";
@@ -1470,7 +1342,7 @@ public class DashboardController implements Initializable {
             pstmtDetalii.executeBatch();
             pstmtUpdateStoc.executeBatch();
 
-            conn.commit();
+            conn.commit(); // Finalizeaza Tranzactia
 
             pstmtDetalii.close();
             pstmtUpdateStoc.close();
@@ -1479,26 +1351,50 @@ public class DashboardController implements Initializable {
         } catch (SQLException e) {
             e.printStackTrace();
             if (conn != null) {
-                try {
-                    conn.rollback();
-                } catch (SQLException ex) {
-                    ex.printStackTrace();
-                }
+                try { conn.rollback(); } catch (SQLException ex) { ex.printStackTrace(); } // Anuleaza Tranzactia
             }
             return false;
         } finally {
             if (conn != null) {
-                try {
-                    conn.setAutoCommit(true);
-                    conn.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
+                try { conn.setAutoCommit(true); conn.close(); } catch (SQLException e) { e.printStackTrace(); }
             }
         }
     }
 
-    // --- Functii ajutatoare ---
+    //=========================================================================
+    // SECTIUNEA 6: Metode Utilitare (Ajutatoare)
+    //=========================================================================
+
+    private void setupColoaneVanzari() {
+        colStocNume.setCellValueFactory(new PropertyValueFactory<>("numeMedicament"));
+        colStocLot.setCellValueFactory(new PropertyValueFactory<>("codLot"));
+        colStocCant.setCellValueFactory(new PropertyValueFactory<>("cantitateStoc"));
+        colStocPret.setCellValueFactory(new PropertyValueFactory<>("pretVanzare"));
+        colStocExp.setCellValueFactory(new PropertyValueFactory<>("dataExpirare"));
+
+        colBonNume.setCellValueFactory(new PropertyValueFactory<>("numeMedicament"));
+        colBonCant.setCellValueFactory(new PropertyValueFactory<>("cantitateVanduta"));
+        colBonPretU.setCellValueFactory(new PropertyValueFactory<>("pretUnitar"));
+        colBonPretT.setCellValueFactory(new PropertyValueFactory<>("pretTotal"));
+    }
+
+    // Functie helper pentru a actualiza listele UI fara a reincarca totul
+    private void actualizeazaItemInListaUI(ObservableList<StocView> lista, StocView lotModificat) {
+        boolean gasitInLista = false;
+        for (int i = 0; i < lista.size(); i++) {
+            StocView itemExistent = lista.get(i);
+            if (itemExistent.getLotID() == lotModificat.getLotID()) {
+                // UPDATE: Actualizeaza item-ul existent
+                lista.set(i, lotModificat);
+                gasitInLista = true;
+                break;
+            }
+        }
+        if (!gasitInLista) {
+            // INSERT: Adauga item-ul nou
+            lista.add(lotModificat);
+        }
+    }
 
     private double calculeazaTotalBon() {
         double total = 0.0;
@@ -1518,14 +1414,6 @@ public class DashboardController implements Initializable {
         alert.showAndWait();
     }
 
-    private void afiseazaAlerta(String titlu, String mesaj) {
-        Alert alert = new Alert(Alert.AlertType.WARNING);
-        alert.setTitle(titlu);
-        alert.setHeaderText(null);
-        alert.setContentText(mesaj);
-        alert.showAndWait();
-    }
-
     private ImageView createIcon(String path, int size) {
         try {
             Image img = new Image(getClass().getResourceAsStream(path));
@@ -1536,7 +1424,6 @@ public class DashboardController implements Initializable {
             return imgView;
         } catch (Exception e) {
             System.err.println("Nu pot incarca imaginea: " + path);
-            e.printStackTrace();
             return null;
         }
     }

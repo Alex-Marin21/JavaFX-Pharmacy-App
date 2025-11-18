@@ -23,7 +23,7 @@
                         <Insets bottom="10" left="10" right="10" top="10" />
                     </padding>
                     <children>
-                        <Label style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Stoc Curent (Loturi)" />
+                        <Label styleClass="header-title" text="Stoc Curent (Loturi)" />
 
                         <TableView fx:id="stocuriTable" VBox.vgrow="ALWAYS">
                             <columns>
@@ -61,7 +61,7 @@
                         </TableView>
                         <HBox alignment="CENTER_LEFT" spacing="10.0">
                             <children>
-                                <Button fx:id="adaugaLotButton" mnemonicParsing="false" onAction="#onAdaugaLotClick" text="Adauga Lot Nou în Stoc (Receptie)" />
+                                <Button fx:id="adaugaLotButton" mnemonicParsing="false" onAction="#onAdaugaLotClick" styleClass="buton-succes" text="Adauga Lot Nou în Stoc (Receptie)" />
                             </children>
                             <padding>
                                 <Insets top="10.0" />
@@ -79,7 +79,7 @@
                         <Insets bottom="10" left="10" right="10" top="10" />
                     </padding>
                     <children>
-                        <Label fx:id="titluListaMedicamente" text="Nomenclator Medicamente" />
+                        <Label fx:id="titluListaMedicamente" styleClass="header-title" text="Nomenclator Medicamente" />
                         <TableView fx:id="medicamenteTable" VBox.vgrow="ALWAYS">
                             <columns>
                                 <TableColumn fx:id="colMedID" prefWidth="70.0" text="ID" />
@@ -89,8 +89,8 @@
                         </TableView>
                         <HBox alignment="CENTER_LEFT" spacing="10.0">
                             <children>
-                                <Button fx:id="adaugaMedicamentButton" mnemonicParsing="false" onAction="#onAdaugaMedicamentClick" text="Adauga Medicament Nou" />
-                                <Button fx:id="stergeMedicamentButton" mnemonicParsing="false" onAction="#onStergeMedicamentClick" text="Sterge Medicamentul Selectat" />
+                                <Button fx:id="adaugaMedicamentButton" mnemonicParsing="false" onAction="#onAdaugaMedicamentClick" styleClass="buton-succes" text="Adauga Medicament Nou" />
+                                <Button fx:id="stergeMedicamentButton" mnemonicParsing="false" onAction="#onStergeMedicamentClick" styleClass="buton-pericol" text="Sterge Medicamentul Selectat" />
                             </children>
                             <padding>
                                 <Insets top="10.0" />
@@ -104,11 +104,9 @@
         <Tab fx:id="comenziTab" text="Comenzi Furnizori">
             <content>
                 <SplitPane dividerPositions="0.5" prefHeight="160.0" prefWidth="200.0">
-
-                    <VBox spacing="10" style="-fx-padding: 10;">
+                    <VBox spacing="10">
                         <children>
-
-                            <Label fx:id="titluProduseCritice" style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Produse cu Stoc Critic (&lt;10)" />
+                            <Label fx:id="titluProduseCritice" styleClass="header-title" text="Produse cu Stoc Critic (&lt;10)" />
                             <TableView fx:id="comenziProduseTable" VBox.vgrow="ALWAYS">
                                 <columns>
                                     <TableColumn fx:id="colComandaNume" prefWidth="250.0" text="Nume Medicament" />
@@ -127,23 +125,21 @@
                                     <TableColumn fx:id="colEpuizatDozaj" prefWidth="80.0" text="Dozaj" />
                                 </columns>
                             </TableView>
-
                         </children>
                     </VBox>
 
-                    <VBox spacing="10" style="-fx-padding: 10;">
+                    <VBox spacing="10">
                         <children>
-                            <Label style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Furnizori Disponibili" />
+                            <Label styleClass="header-title" text="Furnizori Disponibili" />
                             <TableView fx:id="comenziFurnizoriTable" VBox.vgrow="ALWAYS">
                                 <columns>
                                     <TableColumn fx:id="colComandaFurnizor" prefWidth="200.0" text="Nume Furnizor" />
                                     <TableColumn fx:id="colComandaTimp" prefWidth="120.0" text="Timp Livrare (zile)" />
                                 </columns>
                             </TableView>
-                            <Button fx:id="plaseazaComandaButton" maxWidth="Infinity" onAction="#onPlaseazaComandaClick" style="-fx-background-color: #17a2b8; -fx-text-fill: white; -fx-font-size: 14px;" text="Genereaza Comanda (Simulare)" />
+                            <Button fx:id="plaseazaComandaButton" maxWidth="Infinity" onAction="#onPlaseazaComandaClick" styleClass="buton-avertisment" text="Genereaza Comanda (Simulare)" />
                         </children>
                     </VBox>
-
                 </SplitPane>
             </content>
         </Tab>
@@ -151,10 +147,9 @@
         <Tab fx:id="vanzariTab" text="Vanzari (Bonuri Fiscale)">
             <content>
                 <SplitPane dividerPositions="0.6" prefHeight="160.0" prefWidth="200.0">
-
-                    <VBox spacing="10" style="-fx-padding: 10;">
+                    <VBox spacing="10">
                         <children>
-                            <Label fx:id="titluStocDisponibil" style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Stoc Disponibil" />
+                            <Label fx:id="titluStocDisponibil" styleClass="header-title" text="Stoc Disponibil" />
                             <TableView fx:id="stocVanzariTable" VBox.vgrow="ALWAYS">
                                 <columns>
                                     <TableColumn fx:id="colStocNume" prefWidth="200.0" text="Nume Medicament" />
@@ -167,14 +162,14 @@
                             <HBox alignment="CENTER_LEFT" spacing="10">
                                 <Label text="Cantitate:" />
                                 <TextField fx:id="cantitateVanzareField" prefWidth="60" text="1" />
-                                <Button fx:id="adaugaPeBonButton" onAction="#onAdaugaPeBonClick" style="-fx-background-color: #28a745; -fx-text-fill: white;" text="Adauga pe Bon" />
+                                <Button fx:id="adaugaPeBonButton" onAction="#onAdaugaPeBonClick" styleClass="buton-succes" text="Adauga pe Bon" />
                             </HBox>
                         </children>
                     </VBox>
 
-                    <VBox spacing="10" style="-fx-padding: 10;">
+                    <VBox spacing="10">
                         <children>
-                            <Label fx:id="titluBonCurent" style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Bon Curent" />
+                            <Label fx:id="titluBonCurent" styleClass="header-title" text="Bon Curent" />
                             <TableView fx:id="bonCurentTable" VBox.vgrow="ALWAYS">
                                 <columns>
                                     <TableColumn fx:id="colBonNume" prefWidth="150.0" text="Produs" />
@@ -185,13 +180,12 @@
                             </TableView>
                             <HBox alignment="CENTER_RIGHT" spacing="10">
                                 <Label style="-fx-font-size: 16px; -fx-font-weight: bold;" text="TOTAL BON:" />
-                                <Label fx:id="totalBonLabel" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: blue;" text="0.00 Lei" />
+                                <Label fx:id="totalBonLabel" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: -fx-accent;" text="0.00 Lei" />
                             </HBox>
-                            <Button fx:id="stergeProdusButton" maxWidth="Infinity" onAction="#onStergeProdusClick" style="-fx-background-color: #dc3545;" text="Sterge Produs de pe Bon" />
-                            <Button fx:id="finalizeazaVanzareButton" maxWidth="Infinity" onAction="#onFinalizeazaVanzareClick" prefHeight="40" style="-fx-background-color: #007bff; -fx-text-fill: white; -fx-font-size: 16px;" text="Finalizeaza Vanzarea" />
+                            <Button fx:id="stergeProdusButton" maxWidth="Infinity" onAction="#onStergeProdusClick" styleClass="buton-pericol" text="Sterge Produs de pe Bon" />
+                            <Button fx:id="finalizeazaVanzareButton" maxWidth="Infinity" onAction="#onFinalizeazaVanzareClick" prefHeight="40" styleClass="buton-primar" text="Finalizeaza Vanzarea" />
                         </children>
                     </VBox>
-
                 </SplitPane>
             </content>
         </Tab>
@@ -199,9 +193,9 @@
         <Tab fx:id="furnizoriTab" text="Furnizori">
             <content>
                 <SplitPane dividerPositions="0.6" prefHeight="160.0" prefWidth="200.0">
-                    <VBox spacing="10" style="-fx-padding: 10;">
+                    <VBox spacing="10">
                         <children>
-                            <Label fx:id="titluListaFurnizori" text="Lista Furnizorilor" />
+                            <Label fx:id="titluListaFurnizori" styleClass="header-title" text="Lista Furnizorilor" />
                             <TableView fx:id="furnizoriTable" VBox.vgrow="ALWAYS">
                                 <columns>
                                     <TableColumn prefWidth="50.0" text="ID">
@@ -228,8 +222,8 @@
                             </TableView>
                             <HBox alignment="CENTER_LEFT" spacing="10.0">
                                 <children>
-                                    <Button fx:id="adaugaFurnizorButton" mnemonicParsing="false" onAction="#onAdaugaFurnizorClick" text="Adauga Furnizor Nou" />
-                                    <Button fx:id="stergeFurnizorButton" mnemonicParsing="false" onAction="#onStergeFurnizorClick" text="Sterge Furnizorul Selectat" />
+                                    <Button fx:id="adaugaFurnizorButton" mnemonicParsing="false" onAction="#onAdaugaFurnizorClick" styleClass="buton-succes" text="Adauga Furnizor Nou" />
+                                    <Button fx:id="stergeFurnizorButton" mnemonicParsing="false" onAction="#onStergeFurnizorClick" styleClass="buton-pericol" text="Sterge Furnizorul Selectat" />
                                 </children>
                                 <padding>
                                     <Insets top="10.0" />
@@ -238,7 +232,7 @@
                         </children>
                     </VBox>
 
-                    <VBox spacing="10" style="-fx-padding: 10;">
+                    <VBox spacing="10">
                         <children>
                             <Label fx:id="titluStocFurnizor" styleClass="header-title" text="Stoc de la Furnizor" />
                             <TableView fx:id="stocFurnizorTable" VBox.vgrow="ALWAYS">
@@ -251,7 +245,6 @@
                             <Label text="* Selectați un furnizor din stânga." style="-fx-font-style: italic; -fx-text-fill: #555;" />
                         </children>
                     </VBox>
-
                 </SplitPane>
             </content>
         </Tab>
@@ -259,9 +252,9 @@
         <Tab fx:id="angajatiTab" text="Angajați &amp; Performanță">
             <content>
                 <SplitPane dividerPositions="0.6" prefHeight="160.0" prefWidth="200.0">
-                    <VBox spacing="10" style="-fx-padding: 10;">
+                    <VBox spacing="10">
                         <children>
-                            <Label fx:id="titluListaAngajati" text="Lista Angajati" />
+                            <Label fx:id="titluListaAngajati" styleClass="header-title" text="Lista Angajati" />
                             <TableView fx:id="angajatiTable" VBox.vgrow="ALWAYS">
                                 <columns>
                                     <TableColumn prefWidth="50.0" text="ID">
@@ -286,11 +279,10 @@
                                     </TableColumn>
                                 </columns>
                             </TableView>
-
                         </children>
                     </VBox>
 
-                    <VBox spacing="10" style="-fx-padding: 10;">
+                    <VBox spacing="10">
                         <children>
                             <Label fx:id="titluVanzariAngajat" styleClass="header-title" text="Vanzari Angajat Selectat" />
                             <TableView fx:id="vanzariAngajatTable" VBox.vgrow="ALWAYS">
@@ -303,7 +295,6 @@
                             <Label text="* Selectați un angajat din stânga pentru a vedea vânzările." style="-fx-font-style: italic; -fx-text-fill: #555;" />
                         </children>
                     </VBox>
-
                 </SplitPane>
             </content>
         </Tab>

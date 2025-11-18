@@ -7,7 +7,6 @@ public class Medicament {
     private final SimpleIntegerProperty medicamentID;
     private final SimpleStringProperty numeMedicament;
     private final SimpleStringProperty dozaj;
-    // Puteti adauga si restul campurilor (FormaFarmaceutica etc.) daca doriti
 
     public Medicament(int id, String nume, String dozaj) {
         this.medicamentID = new SimpleIntegerProperty(id);
